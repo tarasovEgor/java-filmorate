@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Data
 @Builder(toBuilder = true)
 public class User {
-    private final int id;
+    private final int userId;
     @Email
     @NotBlank
     private final String email;

@@ -43,7 +43,7 @@ public class FilmController {
             log.error(String.valueOf(FilmValidationErrors.INVALID_DURATION_ERROR));
             throw new ValidationException("Film's duration can't be negative.");
         }
-        films.put(film.getId(), film);
+        films.put(film.getFilmId(), film);
         log.debug("{} - has been successfully added.", film.getName());
         return film;
     }
@@ -66,7 +66,7 @@ public class FilmController {
             log.error(String.valueOf(FilmValidationErrors.INVALID_DURATION_ERROR));
             throw new ValidationException("Film's duration can't be negative.");
         }
-        films.put(film.getId(), film);
+        films.put(film.getFilmId(), film);
         log.debug("{} - has been successfully added.", film.getName());
         return film;
     }

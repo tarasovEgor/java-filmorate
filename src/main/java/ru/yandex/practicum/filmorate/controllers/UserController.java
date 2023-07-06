@@ -43,7 +43,7 @@ public class UserController {
             log.info("User's name is set to login.");
             user.setName(user.getLogin());
         }
-        users.put(user.getId(), user);
+        users.put(user.getUserId(), user);
         log.debug("User - {} was successfully added.", user.getLogin());
         return user;
     }
@@ -66,7 +66,7 @@ public class UserController {
             log.info("User's name is set to login.");
             user.setName(user.getLogin());
         }
-        users.put(user.getId(), user);
+        users.put(user.getUserId(), user);
         log.debug("User - {} was successfully added.", user.getLogin());
         return user;
     }
