@@ -22,7 +22,7 @@ public class UserControllerTest {
     public void init() {
         controller = new UserController();
         user = User.builder()
-                .userId(1)
+                .id(1)
                 .email("user123@mail.ru")
                 .login("user123")
                 .name("name")
@@ -33,7 +33,7 @@ public class UserControllerTest {
     @Test
     public void shouldReturnAllUsers() {
         User newUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("user123@mail.ru")
                 .login("user123")
                 .name("name")
@@ -41,7 +41,7 @@ public class UserControllerTest {
                 .build();
 
         Map<Integer, User> users = new HashMap<>();
-        users.put(newUser.getUserId(), newUser);
+        users.put(newUser.getId(), newUser);
 
         controller.createUser(user);
         Map<Integer, User> usersCopy = controller.getAllUsers();
@@ -53,7 +53,7 @@ public class UserControllerTest {
     @Test
     public void shouldCreateUser() {
         User newUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("user123@mail.ru")
                 .login("user123")
                 .name("name")
@@ -70,7 +70,7 @@ public class UserControllerTest {
     @Test
     public void shouldUpdateUser() {
         User newUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("user123@mail.ru")
                 .login("user123")
                 .name("name")
@@ -80,7 +80,7 @@ public class UserControllerTest {
         controller.createUser(newUser);
 
         User updatedUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("updated123@mail.ru")
                 .login("updatedUser123")
                 .name("newName")
@@ -97,7 +97,7 @@ public class UserControllerTest {
     @Test
     public void shouldThrowValidationExceptionWhenUsersEmailIsEmpty() {
         User newUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("")
                 .login("user123")
                 .name("name")
@@ -115,7 +115,7 @@ public class UserControllerTest {
     @Test
     public void shouldThrowValidationExceptionWhenUsersEmailDoesNotContainAtSignSymbol() {
         User newUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("user123mail.ru")
                 .login("user123")
                 .name("name")
@@ -133,7 +133,7 @@ public class UserControllerTest {
     @Test
     public void shouldThrowValidationExceptionWhenUsersLoginIsEmpty() {
         User newUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("user123@mail.ru")
                 .login("")
                 .name("name")
@@ -151,7 +151,7 @@ public class UserControllerTest {
     @Test
     public void shouldThrowValidationExceptionWhenUsersLoginContainsSpaces() {
         User newUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("user123@mail.ru")
                 .login("user 123")
                 .name("name")
@@ -169,7 +169,7 @@ public class UserControllerTest {
     @Test
     public void shouldThrowValidationExceptionWhenUsersBirthdayIsAfterTodaysDate() {
         User newUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("user123@mail.ru")
                 .login("user123")
                 .name("name")
@@ -187,7 +187,7 @@ public class UserControllerTest {
     @Test
     public void  shouldSetUsersNameToLoginWhenNameFieldIsEmpty() {
         User newUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("user123@mail.ru")
                 .login("user123")
                 .name("")
@@ -204,7 +204,7 @@ public class UserControllerTest {
     @Test
     public void shouldThrowValidationExceptionWhenUpdatedUsersEmailIsEmpty() {
         User newUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("user123@mail.ru")
                 .login("user123")
                 .name("name")
@@ -214,7 +214,7 @@ public class UserControllerTest {
         controller.createUser(newUser);
 
         User updatedUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("")
                 .login("updatedUser123")
                 .name("newName")
@@ -233,7 +233,7 @@ public class UserControllerTest {
     @Test
     public void shouldThrowValidationExceptionWhenUpdatedUsersEmailDoesNotContainAtSignSymbol() {
         User newUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("user123@mail.ru")
                 .login("user123")
                 .name("name")
@@ -243,7 +243,7 @@ public class UserControllerTest {
         controller.createUser(newUser);
 
         User updatedUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("updatedUser123mail.ru")
                 .login("updatedUser123")
                 .name("newName")
@@ -262,7 +262,7 @@ public class UserControllerTest {
     @Test
     public void shouldThrowValidationExceptionWhenUpdatedUsersLoginIsEmpty() {
         User newUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("user123@mail.ru")
                 .login("user123")
                 .name("name")
@@ -272,7 +272,7 @@ public class UserControllerTest {
         controller.createUser(newUser);
 
         User updatedUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("updatedUser123@mail.ru")
                 .login("")
                 .name("newName")
@@ -291,7 +291,7 @@ public class UserControllerTest {
     @Test
     public void shouldThrowValidationExceptionWhenUpdatedUsersLoginContainsSpaces() {
         User newUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("user123@mail.ru")
                 .login("user123")
                 .name("name")
@@ -301,7 +301,7 @@ public class UserControllerTest {
         controller.createUser(newUser);
 
         User updatedUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("updatedUser123@mail.ru")
                 .login("updatedUser 123")
                 .name("newName")
@@ -320,7 +320,7 @@ public class UserControllerTest {
     @Test
     public void shouldThrowValidationExceptionWhenUpdatedUsersBirthdayIsAfterTodaysDate() {
         User newUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("user123@mail.ru")
                 .login("user123")
                 .name("name")
@@ -330,7 +330,7 @@ public class UserControllerTest {
         controller.createUser(newUser);
 
         User updatedUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("updatedUser123@mail.ru")
                 .login("updatedUser123")
                 .name("newName")
@@ -349,7 +349,7 @@ public class UserControllerTest {
     @Test
     public void shouldSetUpdatedUsersNameToLoginWhenNameIsEmpty() {
         User newUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("user123@mail.ru")
                 .login("user123")
                 .name("name")
@@ -359,7 +359,7 @@ public class UserControllerTest {
         controller.createUser(user);
 
         User updatedUser = User.builder()
-                .userId(1)
+                .id(1)
                 .email("updated123@mail.ru")
                 .login("updatedUser123")
                 .name("")

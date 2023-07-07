@@ -27,8 +27,8 @@ public class UserController {
 
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
-        if (users.containsKey(user.getUserId())) {
-            user.setUserId(users.size() + 1);
+        if (users.containsKey(user.getId())) {
+            user.setId(users.size() + 1);
             if (user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
                 log.error(String.valueOf(UserValidationErrors.INVALID_EMAIL_ERROR));
                 throw new ValidationException("Email field is rather empty or doesn't contain a '@' symbol.");
@@ -45,10 +45,10 @@ public class UserController {
                 log.info("User's name is set to login.");
                 user.setName(user.getLogin());
             }
-            users.put(user.getUserId(), user);
+            users.put(user.getId(), user);
             log.debug("User - {} was successfully added.", user.getLogin());
-        } else if (user.getUserId() == null) {
-            user.setUserId(users.size() + 1);
+        } else if (user.getId() == null) {
+            user.setId(users.size() + 1);
             if (user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
                 log.error(String.valueOf(UserValidationErrors.INVALID_EMAIL_ERROR));
                 throw new ValidationException("Email field is rather empty or doesn't contain a '@' symbol.");
@@ -65,7 +65,7 @@ public class UserController {
                 log.info("User's name is set to login.");
                 user.setName(user.getLogin());
             }
-            users.put(user.getUserId(), user);
+            users.put(user.getId(), user);
             log.debug("User - {} was successfully added.", user.getLogin());
         } else if (user.getName() == null) {
             if (user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
@@ -80,7 +80,7 @@ public class UserController {
                 log.error(String.valueOf(UserValidationErrors.INVALID_BIRTHDAY_ERROR));
                 throw new ValidationException("Birthday cannot be past today's date.");
             }
-            user.setUserId(users.size() + 1);
+            user.setId(users.size() + 1);
             log.info("User's name is set to login.");
             user.setName(user.getLogin());
         } else {
@@ -100,7 +100,7 @@ public class UserController {
                 log.info("User's name is set to login.");
                 user.setName(user.getLogin());
             }
-            users.put(user.getUserId(), user);
+            users.put(user.getId(), user);
         }
 
         return user;
@@ -124,7 +124,7 @@ public class UserController {
             log.info("User's name is set to login.");
             user.setName(user.getLogin());
         }
-        users.put(user.getUserId(), user);
+        users.put(user.getId(), user);
         log.debug("User - {} was successfully added.", user.getLogin());
         return user;
     }
