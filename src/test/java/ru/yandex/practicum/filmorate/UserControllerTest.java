@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SpringBootTest
-public class UserControllerTest extends UserTest {
+public class UserControllerTest {
     private UserController controller;
     private User user;
     @BeforeEach

@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SpringBootTest
-public class FilmControllerTest extends FilmTest {
+public class FilmControllerTest {
     private FilmController controller;
     private Film film;
 
