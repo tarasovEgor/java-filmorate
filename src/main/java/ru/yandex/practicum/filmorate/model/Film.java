@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Data
 @Builder(toBuilder = true)
 public class Film {
-    private final int filmId;
+    private final int id;
     @NotBlank
     private final String name;
     private final String description;
