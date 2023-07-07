@@ -84,6 +84,18 @@ public class UserController {
             log.info("User's name is set to login.");
             user.setName(user.getLogin());
         } else {
+            if (user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
+                log.error(String.valueOf(UserValidationErrors.INVALID_EMAIL_ERROR));
+                throw new ValidationException("Email field is rather empty or doesn't contain a '@' symbol.");
+            }
+            if (user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
+                log.error(String.valueOf(UserValidationErrors.INVALID_LOGIN_ERROR));
+                throw new ValidationException("Login field is rather empty or contains spaces.");
+            }
+            if (user.getBirthday().isAfter(LocalDate.now())) {
+                log.error(String.valueOf(UserValidationErrors.INVALID_BIRTHDAY_ERROR));
+                throw new ValidationException("Birthday cannot be past today's date.");
+            }
             if (user.getName().isEmpty() || user.getName().isBlank()) {
                 log.info("User's name is set to login.");
                 user.setName(user.getLogin());
