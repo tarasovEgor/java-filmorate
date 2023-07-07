@@ -17,6 +17,7 @@ import java.util.Map;
 public class UserControllerTest {
     private UserController controller;
     private User user;
+
     @BeforeEach
     public void init() {
         controller = new UserController();
@@ -367,8 +368,8 @@ public class UserControllerTest {
 
         controller.updateUser(updatedUser);
 
-        assertEquals(controller.getAllUsers().get(1).getName()
-                , controller.getAllUsers().get(1).getLogin());
+        assertEquals(controller.getAllUsers().get(1).getName(),
+                controller.getAllUsers().get(1).getLogin());
     }
 }
 
