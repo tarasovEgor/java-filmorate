@@ -18,7 +18,7 @@ import javax.validation.Valid;
 @RequestMapping("/films")
 public class FilmController {
     private final Map<Integer, Film> films = new HashMap<>();
-    private final static Logger log = LoggerFactory.getLogger(FilmController.class);
+    private final Logger log = LoggerFactory.getLogger(FilmController.class);
 
     @GetMapping
     public Map<Integer, Film> getAllFilms() {

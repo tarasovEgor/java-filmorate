@@ -18,7 +18,7 @@ import javax.validation.Valid;
 @RequestMapping("/users")
 public class UserController {
     private final Map<Integer, User> users = new HashMap<>();
-    private final static Logger log = LoggerFactory.getLogger(UserController.class);
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping
     public Map<Integer, User> getAllUsers() {
