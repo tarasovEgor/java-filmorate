@@ -25,7 +25,7 @@ public class UserController {
         return users;
     }
 
-    @PostMapping("/user")
+    @PostMapping
     public User createUser(@Valid @RequestBody User user) {
         if (user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
             log.error(String.valueOf(UserValidationErrors.INVALID_EMAIL_ERROR));
@@ -48,7 +48,7 @@ public class UserController {
         return user;
     }
 
-    @PutMapping("/user")
+    @PutMapping
     public User updateUser(@Valid @RequestBody User user) {
         if (user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
             log.error(String.valueOf(UserValidationErrors.INVALID_EMAIL_ERROR));

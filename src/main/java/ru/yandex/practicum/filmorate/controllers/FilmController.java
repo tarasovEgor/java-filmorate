@@ -25,7 +25,7 @@ public class FilmController {
         return films;
     }
 
-    @PostMapping("/film")
+    @PostMapping
     public Film createFilm(@Valid @RequestBody Film film) {
         if (film.getName().isEmpty()) {
             log.error(String.valueOf(FilmValidationErrors.INVALID_NAME_ERROR));
@@ -48,7 +48,7 @@ public class FilmController {
         return film;
     }
 
-    @PutMapping("/film")
+    @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
         if (film.getName().isEmpty()) {
             log.error(String.valueOf(FilmValidationErrors.INVALID_NAME_ERROR));
