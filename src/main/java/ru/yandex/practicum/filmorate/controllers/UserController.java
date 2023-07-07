@@ -64,7 +64,10 @@ public class UserController {
                 log.error(String.valueOf(UserValidationErrors.INVALID_BIRTHDAY_ERROR));
                 throw new ValidationException("Birthday cannot be past today's date.");
             }
-            if (user.getName().isEmpty() || user.getName().isBlank()) {
+            if (user.getName() == null) {
+                log.info("User's name is set to login.");
+                user.setName(user.getLogin());
+            } else if (user.getName().isEmpty() || user.getName().isBlank()) {
                 log.info("User's name is set to login.");
                 user.setName(user.getLogin());
             }

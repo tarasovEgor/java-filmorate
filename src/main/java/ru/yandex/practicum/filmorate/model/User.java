@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 public class User {
     private Integer id;
     @Email
