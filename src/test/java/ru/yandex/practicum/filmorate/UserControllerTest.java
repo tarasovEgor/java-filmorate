@@ -10,8 +10,8 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
 public class UserControllerTest {
@@ -40,11 +40,11 @@ public class UserControllerTest {
                 .birthday(LocalDate.of(1999, 5, 23))
                 .build();
 
-        Map<Integer, User> users = new HashMap<>();
-        users.put(newUser.getId(), newUser);
+        List<User> users = new ArrayList<>();
+        users.add(newUser);
 
         controller.createUser(user);
-        Map<Integer, User> usersCopy = controller.getAllUsers();
+        List<User> usersCopy = controller.getAllUsers();
 
         assertEquals(users, usersCopy);
         assertEquals(usersCopy.size(), 1);
@@ -63,7 +63,7 @@ public class UserControllerTest {
         controller.createUser(newUser);
 
         assertEquals(user, newUser);
-        assertEquals(controller.getAllUsers().get(1), user);
+        assertEquals(controller.getAllUsers().get(0), user);
         assertEquals(controller.getAllUsers().size(), 1);
     }
 
@@ -90,8 +90,8 @@ public class UserControllerTest {
         controller.updateUser(updatedUser);
 
         assertNotNull(controller.getAllUsers());
-        assertEquals(controller.getAllUsers().get(1), updatedUser);
-        assertNotEquals(controller.getAllUsers().get(1), newUser);
+        assertEquals(controller.getAllUsers().get(0), updatedUser);
+        assertNotEquals(controller.getAllUsers().get(0), newUser);
     }
 
     @Test
@@ -196,8 +196,8 @@ public class UserControllerTest {
 
         controller.createUser(newUser);
 
-        assertEquals(controller.getAllUsers().get(1).getName(),
-                controller.getAllUsers().get(1).getLogin()
+        assertEquals(controller.getAllUsers().get(0).getName(),
+                controller.getAllUsers().get(0).getLogin()
         );
     }
 
@@ -227,7 +227,7 @@ public class UserControllerTest {
         );
 
         assertEquals("Email field is rather empty or doesn't contain a '@' symbol.", exc.getMessage());
-        assertEquals(controller.getAllUsers().get(1), newUser);
+        assertEquals(controller.getAllUsers().get(0), newUser);
     }
 
     @Test
@@ -256,7 +256,7 @@ public class UserControllerTest {
         );
 
         assertEquals("Email field is rather empty or doesn't contain a '@' symbol.", exc.getMessage());
-        assertEquals(controller.getAllUsers().get(1), newUser);
+        assertEquals(controller.getAllUsers().get(0), newUser);
     }
 
     @Test
@@ -285,7 +285,7 @@ public class UserControllerTest {
         );
 
         assertEquals("Login field is rather empty or contains spaces.", exc.getMessage());
-        assertEquals(controller.getAllUsers().get(1), newUser);
+        assertEquals(controller.getAllUsers().get(0), newUser);
     }
 
     @Test
@@ -314,7 +314,7 @@ public class UserControllerTest {
         );
 
         assertEquals("Login field is rather empty or contains spaces.", exc.getMessage());
-        assertEquals(controller.getAllUsers().get(1), newUser);
+        assertEquals(controller.getAllUsers().get(0), newUser);
     }
 
     @Test
@@ -343,7 +343,7 @@ public class UserControllerTest {
         );
 
         assertEquals("Birthday cannot be past today's date.", exc.getMessage());
-        assertEquals(controller.getAllUsers().get(1), newUser);
+        assertEquals(controller.getAllUsers().get(0), newUser);
     }
 
     @Test
@@ -368,8 +368,8 @@ public class UserControllerTest {
 
         controller.updateUser(updatedUser);
 
-        assertEquals(controller.getAllUsers().get(1).getName(),
-                controller.getAllUsers().get(1).getLogin());
+        assertEquals(controller.getAllUsers().get(0).getName(),
+                controller.getAllUsers().get(0).getLogin());
     }
 }
 

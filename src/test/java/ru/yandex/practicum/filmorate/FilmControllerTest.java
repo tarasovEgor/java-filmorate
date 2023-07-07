@@ -10,8 +10,8 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
 public class FilmControllerTest {
@@ -48,11 +48,11 @@ public class FilmControllerTest {
                 .duration(153)
                 .build();
 
-        Map<Integer, Film> films = new HashMap<>();
-        films.put(newFilm.getId(), newFilm);
+        List<Film> films = new ArrayList<>();
+        films.add(film);
 
         controller.createFilm(film);
-        Map<Integer, Film> filmsCopy = controller.getAllFilms();
+        List<Film> filmsCopy = controller.getAllFilms();
 
         assertEquals(films, filmsCopy);
         assertEquals(filmsCopy.size(), 1);
@@ -75,7 +75,7 @@ public class FilmControllerTest {
         controller.createFilm(newFilm);
 
         assertEquals(film, newFilm);
-        assertEquals(controller.getAllFilms().get(1), film);
+        assertEquals(controller.getAllFilms().get(0), film);
         assertEquals(controller.getAllFilms().size(), 1);
     }
 
@@ -107,8 +107,8 @@ public class FilmControllerTest {
         controller.updateFilm(updatedFilm);
 
         assertNotNull(controller.getAllFilms());
-        assertEquals(controller.getAllFilms().get(1), updatedFilm);
-        assertNotEquals(controller.getAllFilms().get(1), newFilm);
+        assertEquals(controller.getAllFilms().get(0), updatedFilm);
+        assertNotEquals(controller.getAllFilms().get(0), newFilm);
     }
 
     @Test
