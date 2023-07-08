@@ -73,7 +73,7 @@ public class MainController {
             Film newFilm = FilmValidationController.addFilmWithExistingIdOrFilmWithNoId(films, film, log);
             log.debug("{} - has been successfully added.", newFilm.getName());
             films.put(newFilm.getId(), newFilm);
-        } else if(film.getId() == null) {
+        } else if (film.getId() == null) {
             Film newFilm = FilmValidationController.addFilmWithExistingIdOrFilmWithNoId(films, film, log);
             log.debug("{} - has been successfully added.", newFilm.getName());
             films.put(newFilm.getId(), newFilm);
