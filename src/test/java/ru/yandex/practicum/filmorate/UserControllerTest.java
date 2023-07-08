@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import ru.yandex.practicum.filmorate.controllers.UserController;
+import ru.yandex.practicum.filmorate.controllers.MainController;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -15,12 +15,12 @@ import java.util.List;
 
 @SpringBootTest
 public class UserControllerTest {
-    private UserController controller;
+    private MainController controller;
     private User user;
 
     @BeforeEach
     public void init() {
-        controller = new UserController();
+        controller = new MainController();
         user = User.builder()
                 .id(1)
                 .email("user123@mail.ru")

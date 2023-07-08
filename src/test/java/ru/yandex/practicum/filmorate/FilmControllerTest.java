@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
-import ru.yandex.practicum.filmorate.controllers.FilmController;
+import ru.yandex.practicum.filmorate.controllers.MainController;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -15,12 +15,12 @@ import java.util.List;
 
 @SpringBootTest
 public class FilmControllerTest {
-    private FilmController controller;
+    private MainController controller;
     private Film film;
 
     @BeforeEach
     public void init() {
-        controller = new FilmController();
+        controller = new MainController();
         film = Film.builder()
                 .id(1)
                 .name("The Godfather")
