@@ -78,7 +78,7 @@ public class MainController {
             log.debug("{} - has been successfully added.", newFilm.getName());
             films.put(newFilm.getId(), newFilm);
         } else {
-            Film newFilm = FilmValidationController.addFilm(film ,log);
+            Film newFilm = FilmValidationController.addFilm(film, log);
             log.debug("{} - has been successfully added.", newFilm.getName());
             films.put(newFilm.getId(), newFilm);
         }
