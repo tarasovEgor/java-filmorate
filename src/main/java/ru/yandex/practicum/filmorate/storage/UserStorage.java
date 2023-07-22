@@ -20,6 +20,6 @@ public interface UserStorage {
     User addUser(User user, Logger log);
 
     User updateUserById(User user, Logger log);
-    
+
     void deleteUserById(User user, Logger log);
 }
