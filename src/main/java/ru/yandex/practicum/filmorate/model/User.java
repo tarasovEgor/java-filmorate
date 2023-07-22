@@ -15,7 +15,7 @@ public class User {
     private Long id;
 
     @Builder.Default
-    private Set<Long> friends = new HashSet<>(0);
+    private Set<Long> friends = new HashSet<>();
     @Email
     @NotBlank
     private String email;

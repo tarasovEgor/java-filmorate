@@ -51,6 +51,9 @@ public class UserService {
         Optional<User> user = userStorage.getUserById(userId, log);
         Optional<User> friend = userStorage.getUserById(newFriendsId, log);
 
+        user.get().setFriends(new HashSet<>());
+        friend.get().setFriends(new HashSet<>());
+
         if (user.isPresent() && friend.isPresent()) {
             if (user.get().getFriends() != null && user.get().getFriends().contains(friend.get().getId())) {
                 throw new ValidationException("A friend has already been added to user's friends list.");
@@ -86,6 +89,9 @@ public class UserService {
         Optional<User> user = userStorage.getUserById(userId, log);
         Optional<User> friend = userStorage.getUserById(friendId, log);
 
+        user.get().setFriends(new HashSet<>());
+        friend.get().setFriends(new HashSet<>());
+
         if (user.isPresent() && friend.isPresent()) {
             if (user.get().getFriends().contains(friend.get().getId())) {
                 user.get().getFriends().remove(friend.get().getId());
@@ -99,6 +105,8 @@ public class UserService {
 
     public List<User> getUsersFriends(Long userId) {
         Optional<User> user = userStorage.getUserById(userId, log);
+
+        user.get().setFriends(new HashSet<>());
 
         List<Long> usersFriendsIds = user.get().getFriends().stream()
                 .sequential()
@@ -125,6 +133,9 @@ public class UserService {
     public List<User> getCommonFriends(Long userId, Long friendId) {
         Optional<User> user = userStorage.getUserById(userId, log);
         Optional<User> friend = userStorage.getUserById(friendId, log);
+
+        user.get().setFriends(new HashSet<>());
+        friend.get().setFriends(new HashSet<>());
 
         List<Long> commonFriendsIds = user.get().getFriends().stream()
                 .filter(friendsFriends -> friend.get().getFriends().stream()
