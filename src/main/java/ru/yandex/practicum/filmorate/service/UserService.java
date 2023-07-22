@@ -122,15 +122,22 @@ public class UserService {
         return commonFriends;
     }*/
 
-    public List<Long> getCommonFriends(Long userId, Long friendId) {
+    public List<User> getCommonFriends(Long userId, Long friendId) {
         Optional<User> user = userStorage.getUserById(userId, log);
         Optional<User> friend = userStorage.getUserById(friendId, log);
 
-        List<Long> commonFriends = user.get().getFriends().stream()
+        List<Long> commonFriendsIds = user.get().getFriends().stream()
                 .filter(friendsFriends -> friend.get().getFriends().stream()
                         .anyMatch(usersFriends -> usersFriends.equals(friendsFriends))
                 )
                 .collect(Collectors.toList());
+
+        List<User> commonFriends = new ArrayList<>();
+
+        for (int i = 0; i < commonFriendsIds.size(); i++) {
+            Optional<User> commonFriend = userStorage.getUserById(commonFriendsIds.get(i), log);
+            commonFriends.add(commonFriend.get());
+        }
         return commonFriends;
     }
 }

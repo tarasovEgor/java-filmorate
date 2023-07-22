@@ -22,12 +22,11 @@ public class FriendsController {
 
     @GetMapping("/users/{id}/friends")
     public List<User> getUsersFriends(@PathVariable String id) {
-
         return userService.getUsersFriends(Long.valueOf(id));
     }
 
     @GetMapping("/users/{id}/friends/common/{otherId}")
-    public List<Long> getCommonFriends(@PathVariable String id, @PathVariable String otherId) {
+    public List<User> getCommonFriends(@PathVariable String id, @PathVariable String otherId) {
         return userService.getCommonFriends(Long.valueOf(id), Long.valueOf(otherId));
     }
 
