@@ -11,8 +11,8 @@ import java.util.Map;
 
 public class FilmValidationController {
 
-    public static Film addFilmWithExistingIdOrFilmWithNoId(Map<Integer, Film> films, Film film, Logger log) {
-        film.setId(films.size() + 1);
+    public static Film addFilmWithExistingIdOrFilmWithNoId(Map<Long, Film> films, Film film, Logger log) {
+        film.setId(films.size() + 1L);
         if (film.getName().isEmpty()) {
             log.error(String.valueOf(FilmValidationErrors.INVALID_NAME_ERROR));
             throw new ValidationException("Please, enter the film's name.");
