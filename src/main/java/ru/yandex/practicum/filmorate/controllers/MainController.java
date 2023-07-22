@@ -32,10 +32,18 @@ public class MainController {
 
     @GetMapping("/users/{id}")
     public Optional<User> getUserById(@PathVariable String id) {
-        if (!inMemoryUserStorage.getAllUsers().contains(id)) {
+        /*if (inMemoryUserStorage.getAllUsers().contains(id)) {
             throw new ObjectNotFoundException("User not found.");
+        } else {
+            return inMemoryUserStorage.getUserById(Long.valueOf(id), log);
+
+        }*/
+
+        if (inMemoryUserStorage.getUserById(Long.valueOf(id), log).isEmpty()) {
+            throw new ObjectNotFoundException("User not found");
+        } else {
+            return inMemoryUserStorage.getUserById(Long.valueOf(id), log);
         }
-        return inMemoryUserStorage.getUserById(Long.valueOf(id), log);
     }
 
 

@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import ru.yandex.practicum.filmorate.exceptions.IncorrectPathVariableException;
+import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
 import java.util.List;
@@ -19,7 +21,8 @@ public class FriendsController {
     private final Logger log = LoggerFactory.getLogger(UserValidationController.class);
 
     @GetMapping("/users/{id}/friends")
-    public List<Long> getUsersFriends(@PathVariable String id) {
+    public List<User> getUsersFriends(@PathVariable String id) {
+
         return userService.getUsersFriends(Long.valueOf(id));
     }
 
@@ -30,6 +33,9 @@ public class FriendsController {
 
     @PutMapping("/users/{id}/friends/{friendId}")
     public List<Long> addANewFriend(@PathVariable String id, @PathVariable String friendId) {
+        if (Integer.parseInt(id) < 0 || Integer.parseInt(friendId) < 0) {
+            throw new IncorrectPathVariableException("User's or friend's ID is negative");
+        }
         return userService.addFriend(Long.valueOf(id), Long.valueOf(friendId));
     }
 

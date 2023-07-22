@@ -97,13 +97,20 @@ public class UserService {
         return new String("User - " + friend.get().getName() + " has been deleted from friends.");
     }
 
-    public List<Long> getUsersFriends(Long userId) {
+    public List<User> getUsersFriends(Long userId) {
         Optional<User> user = userStorage.getUserById(userId, log);
 
-        List<Long> usersFriends = user.get().getFriends().stream()
+        List<Long> usersFriendsIds = user.get().getFriends().stream()
                 .sequential()
                 .collect(Collectors.toList());
-        return usersFriends;
+
+        List<User> userFriendsList = new ArrayList<>();
+
+        for (int i = 0; i < usersFriendsIds.size(); i++) {
+            Optional<User> friend = userStorage.getUserById(usersFriendsIds.get(i), log);
+            userFriendsList.add(friend.get());
+        }
+        return userFriendsList;
     }
 
     /*public List<Long> getCommonFriendsList(User user1, User user2) {
