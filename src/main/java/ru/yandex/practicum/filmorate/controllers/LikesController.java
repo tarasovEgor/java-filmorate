@@ -16,7 +16,7 @@ public class LikesController {
 
     @GetMapping("/films/popular")
     public List<Film> getTenMostPopularFilms(@RequestParam(required = false) String count) {
-        if (count == null) {
+        if (count.isEmpty()) {
             return filmService.getTopTenMostPopularFilms(10L);
         } else {
             return filmService.getTopTenMostPopularFilms(Long.valueOf(count));
