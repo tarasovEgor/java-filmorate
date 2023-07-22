@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.yandex.practicum.filmorate.exceptions.ObjectNotFoundException;
 import ru.yandex.practicum.filmorate.model.ErrorResponse;
 
-import java.util.Map;
-
 @RestControllerAdvice
 public class ErrorHandler {
 
