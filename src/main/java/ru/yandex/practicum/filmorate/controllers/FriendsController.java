@@ -18,7 +18,7 @@ public class FriendsController {
         this.userService = userService;
     }
 
-    private final Logger log = LoggerFactory.getLogger(UserValidationController.class);
+    private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     @GetMapping("/users/{id}/friends")
     public List<User> getUsersFriends(@PathVariable String id) {

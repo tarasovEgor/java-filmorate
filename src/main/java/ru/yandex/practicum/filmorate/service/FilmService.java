@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.controllers.UserValidationController;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
@@ -20,7 +19,7 @@ public class FilmService {
 
     private final UserStorage userStorage;
     private final FilmStorage filmStorage;
-    private final Logger log = LoggerFactory.getLogger(UserValidationController.class);
+    private final Logger log = LoggerFactory.getLogger(FilmService.class);
 
     @Autowired
     public FilmService(FilmStorage filmStorage, UserStorage userStorage) {

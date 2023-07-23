@@ -17,7 +17,7 @@ import java.util.*;
 public class MainController {
     private InMemoryUserStorage inMemoryUserStorage;
     private InMemoryFilmStorage inMemoryFilmStorage;
-    private final Logger log = LoggerFactory.getLogger(UserValidationController.class);
+    private final Logger log = LoggerFactory.getLogger(MainController.class);
 
     public MainController(InMemoryUserStorage inMemoryUserStorage,
                           InMemoryFilmStorage inMemoryFilmStorage) {
@@ -32,13 +32,6 @@ public class MainController {
 
     @GetMapping("/users/{id}")
     public Optional<User> getUserById(@PathVariable String id) {
-        /*if (inMemoryUserStorage.getAllUsers().contains(id)) {
-            throw new ObjectNotFoundException("User not found.");
-        } else {
-            return inMemoryUserStorage.getUserById(Long.valueOf(id), log);
-
-        }*/
-
         if (inMemoryUserStorage.getUserById(Long.valueOf(id), log).isEmpty()) {
             throw new ObjectNotFoundException("User not found");
         } else {
