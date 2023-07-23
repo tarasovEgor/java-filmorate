@@ -42,6 +42,4 @@ public class FriendsController {
     public String deleteFriend(@PathVariable String id, @PathVariable String friendId) {
         return userService.deleteFriend(Long.valueOf(id), Long.valueOf(friendId));
     }
-
-
 }

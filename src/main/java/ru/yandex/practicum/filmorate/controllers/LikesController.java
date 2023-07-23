@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controllers;
 
 import org.springframework.web.bind.annotation.*;
+
 import ru.yandex.practicum.filmorate.exceptions.IncorrectPathVariableException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
@@ -36,6 +37,4 @@ public class LikesController {
         }
         return filmService.removeLikeFromAFilm(Long.valueOf(id), Long.valueOf(userId));
     }
-
-
 }

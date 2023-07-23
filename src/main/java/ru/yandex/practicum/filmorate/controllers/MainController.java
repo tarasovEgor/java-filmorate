@@ -39,7 +39,6 @@ public class MainController {
         }
     }
 
-
     @PostMapping("/users")
     public User createUser(@Valid @RequestBody User user) {
         if (inMemoryUserStorage.getAllUsers().contains(user)) {
@@ -77,14 +76,8 @@ public class MainController {
     @PostMapping("/films")
     public Film createFilm(@Valid @RequestBody Film film) {
         if (inMemoryFilmStorage.getAllFilms().contains(film)) {
-            /*Film newFilm = FilmValidationController.addFilmWithExistingIdOrFilmWithNoId(films, film, log);
-            log.debug("{} - has been successfully added.", newFilm.getName());
-            films.put(newFilm.getId(), newFilm);*/
             inMemoryFilmStorage.addFilmWithExistingIdOrFilmWithNoId(film, log);
         } else if (film.getId() == null) {
-            /*Film newFilm = FilmValidationController.addFilmWithExistingIdOrFilmWithNoId(films, film, log);
-            log.debug("{} - has been successfully added.", newFilm.getName());
-            films.put(newFilm.getId(), newFilm);*/
             inMemoryFilmStorage.addFilmWithExistingIdOrFilmWithNoId(film, log);
         } else {
             inMemoryFilmStorage.addFilm(film, log);
@@ -94,13 +87,6 @@ public class MainController {
 
     @PutMapping("/films")
     public Film updateFilm(@Valid @RequestBody Film film) {
-        /*if (!films.containsKey(film.getId())) {
-            throw new ValidationException("Film was not added");
-        } else {
-            Film newFilm = FilmValidationController.addFilm(film, log);
-            log.debug("{} - has been successfully updated.", newFilm.getName());
-            films.put(newFilm.getId(), newFilm);
-        }*/
         inMemoryFilmStorage.updateFilmById(film, log);
         return film;
     }
