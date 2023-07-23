@@ -51,21 +51,38 @@ public class UserService {
         Optional<User> user = userStorage.getUserById(userId, log);
         Optional<User> friend = userStorage.getUserById(newFriendsId, log);
 
-        user.get().setFriends(new HashSet<>());
-        friend.get().setFriends(new HashSet<>());
-
         if (user.isPresent() && friend.isPresent()) {
-            if (user.get().getFriends() != null && user.get().getFriends().contains(friend.get().getId())) {
-                throw new ValidationException("A friend has already been added to user's friends list.");
-            }
-            if (user.get().getId() == friend.get().getId()) {
-                throw new ValidationException("User cannot be added to its own friend list.");
-            } else {
+            if (user.get().getFriends() == null && friend.get().getFriends() == null) {
+                user.get().setFriends(new HashSet<>());
+                friend.get().setFriends(new HashSet<>());
+
                 user.get().getFriends().add(friend.get().getId());
                 friend.get().getFriends().add(user.get().getId());
+
                 friendsIds = List.of(user.get().getId(), friend.get().getId());
+            } else if (friend.get().getFriends() == null) {
+                friend.get().setFriends(new HashSet<>());
+
+                user.get().getFriends().add(friend.get().getId());
+                friend.get().getFriends().add(user.get().getId());
+
+                friendsIds = List.of(user.get().getId(), friend.get().getId());
+            } else {
+                user.get();
+                if (user.get().getFriends().contains(friend.get().getId())) {
+                    throw new ValidationException("A friend has already been added to user's friends list.");
+                }
+                if (user.get().getId() == friend.get().getId()) {
+                    throw new ValidationException("User cannot be added to its own friend list.");
+                } else {
+                    user.get().getFriends().add(friend.get().getId());
+                    friend.get().getFriends().add(user.get().getId());
+
+                    friendsIds = List.of(user.get().getId(), friend.get().getId());
+                }
             }
         }
+
         return friendsIds;
     }
 
