@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-
     private final UserStorage userStorage;
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
@@ -22,23 +21,6 @@ public class UserService {
     public UserService(UserStorage userStorage) {
         this.userStorage = userStorage;
     }
-
-    /*public List<Long> addFriend(User user, User newFriend) {
-        if (user == null || newFriend == null) {
-            throw new ValidationException("One of the arguments is missing.");
-        }
-        if (user.getFriends().contains(newFriend.getId())) {
-            throw new ValidationException("A friend has already been added to user's friends list.");
-        }
-        if (user.getId() == newFriend.getId()) {
-            throw new ValidationException("User cannot be added to its own friends.");
-        }
-        user.getFriends().add(newFriend.getId());
-        newFriend.getFriends().add(user.getId());
-
-        List<Long> friendsIds = List.of(user.getId(), newFriend.getId());
-        return friendsIds;
-    }*/
 
     public List<Long> addFriend(Long userId, Long newFriendsId) {
         List<Long> friendsIds = new ArrayList<>();
@@ -81,21 +63,8 @@ public class UserService {
                 }
             }
         }
-
         return friendsIds;
     }
-
-    /*public void deleteFriend(User user, User friend) {
-        if (user == null || friend == null) {
-            throw new ValidationException("One of the arguments is missing.");
-        }
-        if (user.getFriends().contains(friend.getId())) {
-            user.getFriends().remove(friend.getId());
-            friend.getFriends().remove(user.getId());
-        } else {
-            throw new ValidationException("User does't have a friend with the ID of - " + friend.getId());
-        }
-    }*/
 
     public String deleteFriend(Long userId, Long friendId) {
         if (userId == null || friendId == null) {
@@ -140,15 +109,6 @@ public class UserService {
         }
         return userFriendsList;
     }
-
-    /*public List<Long> getCommonFriendsList(User user1, User user2) {
-        List<Long> commonFriends = user1.getFriends().stream()
-                .filter(secondSet -> user2.getFriends().stream()
-                        .anyMatch(firstSet -> firstSet.equals(secondSet))
-                )
-                .collect(Collectors.toList());
-        return commonFriends;
-    }*/
 
     public List<User> getCommonFriends(Long userId, Long friendId) {
         Optional<User> user = userStorage.getUserById(userId, log);

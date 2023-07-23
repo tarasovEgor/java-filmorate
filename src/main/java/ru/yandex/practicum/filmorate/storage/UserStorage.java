@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import org.slf4j.Logger;
+
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.List;
