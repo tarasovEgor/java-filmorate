@@ -33,7 +33,7 @@ public class FriendsController {
     @PutMapping("/users/{id}/friends/{friendId}")
     public List<Long> addANewFriend(@PathVariable String id, @PathVariable String friendId) {
         if (Integer.parseInt(id) < 0 || Integer.parseInt(friendId) < 0) {
-            throw new IncorrectPathVariableException("User's or friend's ID is negative");
+            throw new IncorrectPathVariableException("User's or friend's ID is negative.");
         }
         return userService.addFriend(Long.valueOf(id), Long.valueOf(friendId));
     }

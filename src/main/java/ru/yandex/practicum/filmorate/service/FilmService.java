@@ -49,6 +49,9 @@ public class FilmService {
         Optional<User> user = userStorage.getUserById(userId, log);
 
         if (film.isPresent() && user.isPresent()) {
+            if (film.get().getLikes() == null) {
+                film.get().setLikes(new HashSet<>());
+            }
             if (film.get().getLikes().contains(user.get().getId())) {
                 throw new ValidationException("User has liked the film.");
             } else {
@@ -91,6 +94,16 @@ public class FilmService {
         List<Film> mostPopularFilms = new ArrayList<>(filmStorage.getAllFilms());
         return mostPopularFilms.stream()
                 .sorted((f1, f2) -> {
+                    if (f1.getLikes() == null && f2.getLikes() == null) {
+                        f1.setLikes(new HashSet<>());
+                        f2.setLikes(new HashSet<>());
+                    }
+                    if (f1.getLikes() == null) {
+                        f1.setLikes(new HashSet<>());
+                    }
+                    if (f2.getLikes() == null) {
+                        f2.setLikes(new HashSet<>());
+                    }
                     if (f1.getLikes().size() == f2.getLikes().size())
                         return f1.getName().compareTo(f2.getName());
                     else if (f1.getLikes().size() > f2.getLikes().size())

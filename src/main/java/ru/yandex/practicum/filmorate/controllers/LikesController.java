@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controllers;
 
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exceptions.IncorrectPathVariableException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
@@ -16,7 +17,7 @@ public class LikesController {
 
     @GetMapping("/films/popular")
     public List<Film> getTenMostPopularFilms(@RequestParam(required = false) String count) {
-        if (count.isEmpty()) {
+        if (count == null) {
             return filmService.getTopTenMostPopularFilms(10L);
         } else {
             return filmService.getTopTenMostPopularFilms(Long.valueOf(count));
@@ -30,6 +31,9 @@ public class LikesController {
 
     @DeleteMapping("/films/{id}/like/{userId}")
     public String removeLikeFromAFilm(@PathVariable String id, @PathVariable String userId) {
+        if (Integer.parseInt(id) < 0 || Integer.parseInt(userId) < 0) {
+            throw new IncorrectPathVariableException("User's or friend's ID is negative.");
+        }
         return filmService.removeLikeFromAFilm(Long.valueOf(id), Long.valueOf(userId));
     }
 

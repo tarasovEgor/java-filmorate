@@ -74,7 +74,11 @@ public class MainController {
 
     @GetMapping("films/{id}")
     public Optional<Film> getFilmById(@PathVariable String id) {
-        return inMemoryFilmStorage.getFilmById(Long.valueOf(id), log);
+        if (inMemoryFilmStorage.getFilmById(Long.valueOf(id), log).isEmpty()) {
+            throw new ObjectNotFoundException("Film not found");
+        } else {
+            return inMemoryFilmStorage.getFilmById(Long.valueOf(id), log);
+        }
     }
 
     @PostMapping("/films")
