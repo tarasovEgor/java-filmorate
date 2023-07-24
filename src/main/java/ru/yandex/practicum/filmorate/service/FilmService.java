@@ -32,8 +32,8 @@ public class FilmService {
             throw new ValidationException("One of the arguments is missing.");
         }
 
-        Optional<Film> film = filmStorage.getFilmById(filmId, log);
-        Optional<User> user = userStorage.getUserById(userId, log);
+        Optional<Film> film = filmStorage.getFilmById(filmId);
+        Optional<User> user = userStorage.getUserById(userId);
 
         if (film.isPresent() && user.isPresent()) {
             if (film.get().getLikes() == null) {
@@ -53,8 +53,8 @@ public class FilmService {
             throw new ValidationException("One of the arguments is missing.");
         }
 
-        Optional<Film> film = filmStorage.getFilmById(filmId, log);
-        Optional<User> user = userStorage.getUserById(userId, log);
+        Optional<Film> film = filmStorage.getFilmById(filmId);
+        Optional<User> user = userStorage.getUserById(userId);
 
         if (film.isPresent() && user.isPresent()) {
             if (!film.get().getLikes().contains(user.get().getId())) {

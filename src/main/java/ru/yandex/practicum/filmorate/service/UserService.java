@@ -29,8 +29,8 @@ public class UserService {
             throw new ValidationException("One of the arguments is missing.");
         }
 
-        Optional<User> user = userStorage.getUserById(userId, log);
-        Optional<User> friend = userStorage.getUserById(newFriendsId, log);
+        Optional<User> user = userStorage.getUserById(userId);
+        Optional<User> friend = userStorage.getUserById(newFriendsId);
 
         if (user.isPresent() && friend.isPresent()) {
             if (user.get().getFriends() == null && friend.get().getFriends() == null) {
@@ -71,8 +71,8 @@ public class UserService {
             throw new ValidationException("One of the arguments is missing.");
         }
 
-        Optional<User> user = userStorage.getUserById(userId, log);
-        Optional<User> friend = userStorage.getUserById(friendId, log);
+        Optional<User> user = userStorage.getUserById(userId);
+        Optional<User> friend = userStorage.getUserById(friendId);
 
         if (user.get().getFriends() == null || friend.get().getFriends() == null) {
             user.get().setFriends(new HashSet<>());
@@ -91,7 +91,7 @@ public class UserService {
     }
 
     public List<User> getUsersFriends(Long userId) {
-        Optional<User> user = userStorage.getUserById(userId, log);
+        Optional<User> user = userStorage.getUserById(userId);
 
         if (user.get().getFriends() == null) {
             user.get().setFriends(new HashSet<>());
@@ -104,15 +104,15 @@ public class UserService {
         List<User> userFriendsList = new ArrayList<>();
 
         for (int i = 0; i < usersFriendsIds.size(); i++) {
-            Optional<User> friend = userStorage.getUserById(usersFriendsIds.get(i), log);
+            Optional<User> friend = userStorage.getUserById(usersFriendsIds.get(i));
             userFriendsList.add(friend.get());
         }
         return userFriendsList;
     }
 
     public List<User> getCommonFriends(Long userId, Long friendId) {
-        Optional<User> user = userStorage.getUserById(userId, log);
-        Optional<User> friend = userStorage.getUserById(friendId, log);
+        Optional<User> user = userStorage.getUserById(userId);
+        Optional<User> friend = userStorage.getUserById(friendId);
 
         if (user.get().getFriends() == null || friend.get().getFriends() == null) {
             user.get().setFriends(new HashSet<>());
@@ -128,7 +128,7 @@ public class UserService {
         List<User> commonFriends = new ArrayList<>();
 
         for (int i = 0; i < commonFriendsIds.size(); i++) {
-            Optional<User> commonFriend = userStorage.getUserById(commonFriendsIds.get(i), log);
+            Optional<User> commonFriend = userStorage.getUserById(commonFriendsIds.get(i));
             commonFriends.add(commonFriend.get());
         }
         return commonFriends;

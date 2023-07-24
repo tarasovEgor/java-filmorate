@@ -5,11 +5,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
-import ru.yandex.practicum.filmorate.controllers.MainController;
+import ru.yandex.practicum.filmorate.controllers.FilmController;
+//import ru.yandex.practicum.filmorate.controllers.MainController;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,12 +21,17 @@ import java.util.List;
 
 @SpringBootTest
 public class FilmControllerTest {
-    private MainController controller;
     private Film film;
+    private FilmController controller;
+    private FilmStorage filmStorage;
+    private UserStorage userStorage;
+    private FilmService filmService;
 
     @BeforeEach
     public void init() {
-        controller = new MainController(new InMemoryUserStorage(), new InMemoryFilmStorage());
+        filmService = new FilmService(filmStorage, userStorage);
+
+        controller = new FilmController(new InMemoryFilmStorage(), filmService);
         film = Film.builder()
                 .id(1L)
                 .name("The Godfather")

@@ -10,13 +10,13 @@ import java.util.Optional;
 public interface FilmStorage {
     List<Film> getAllFilms();
 
-    Optional<Film> getFilmById(Long id, Logger log);
+    Optional<Film> getFilmById(Long id);
 
-    Film addFilmWithExistingIdOrFilmWithNoId(Film film, Logger log);
+    Film addFilmWithExistingIdOrFilmWithNoId(Film film);
 
-    Film addFilm(Film film, Logger log);
+    Film addFilm(Film film);
 
-    Film updateFilmById(Film film, Logger log);
+    Film updateFilmById(Film film);
 
-    void deleteFilmById(Film film, Logger log);
+    Long deleteFilmById(Long id);
 }

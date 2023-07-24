@@ -21,138 +21,140 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public Optional<User> getUserById(Long id, Logger log) {
+    public Optional<User> getUserById(Long id) {
         return users.values().stream()
                 .filter(x -> x.getId() == id)
                 .findFirst();
     }
 
     @Override
-    public User addUserWithExistingId(User user, Logger log) {
+    public User addUserWithExistingId(User user) {
         user.setId(users.size() + 1L);
         if (user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
-            log.error(String.valueOf(UserValidationErrors.INVALID_EMAIL_ERROR));
+            //log.error(String.valueOf(UserValidationErrors.INVALID_EMAIL_ERROR));
             throw new ValidationException("Email field is rather empty or doesn't contain a '@' symbol.");
         }
         if (user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
-            log.error(String.valueOf(UserValidationErrors.INVALID_LOGIN_ERROR));
+            //log.error(String.valueOf(UserValidationErrors.INVALID_LOGIN_ERROR));
             throw new ValidationException("Login field is rather empty or contains spaces.");
         }
         if (user.getBirthday().isAfter(LocalDate.now())) {
-            log.error(String.valueOf(UserValidationErrors.INVALID_BIRTHDAY_ERROR));
+           // log.error(String.valueOf(UserValidationErrors.INVALID_BIRTHDAY_ERROR));
             throw new ValidationException("Birthday cannot be past today's date.");
         }
         if (user.getName().isEmpty() || user.getName().isBlank()) {
-            log.info("User's name is set to login.");
+           // log.info("User's name is set to login.");
             user.setName(user.getLogin());
         }
-        log.debug("User - {} was successfully added.", user.getLogin());
+       // log.debug("User - {} was successfully added.", user.getLogin());
         users.put(user.getId(), user);
         return user;
     }
 
     @Override
-    public User addUserWithNoId(User user, Logger log) {
+    public User addUserWithNoId(User user) {
         user.setId(users.size() + 1L);
         if (user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
-            log.error(String.valueOf(UserValidationErrors.INVALID_EMAIL_ERROR));
+            //log.error(String.valueOf(UserValidationErrors.INVALID_EMAIL_ERROR));
             throw new ValidationException("Email field is rather empty or doesn't contain a '@' symbol.");
         }
         if (user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
-            log.error(String.valueOf(UserValidationErrors.INVALID_LOGIN_ERROR));
+           // log.error(String.valueOf(UserValidationErrors.INVALID_LOGIN_ERROR));
             throw new ValidationException("Login field is rather empty or contains spaces.");
         }
         if (user.getBirthday().isAfter(LocalDate.now())) {
-            log.error(String.valueOf(UserValidationErrors.INVALID_BIRTHDAY_ERROR));
+          //  log.error(String.valueOf(UserValidationErrors.INVALID_BIRTHDAY_ERROR));
             throw new ValidationException("Birthday cannot be past today's date.");
         }
         if (user.getName() == null) {
-            log.info("User's name is set to login.");
+           // log.info("User's name is set to login.");
             user.setName(user.getLogin());
         } else if (user.getName().isEmpty() || user.getName().isBlank()) {
-            log.info("User's name is set to login.");
+          //  log.info("User's name is set to login.");
             user.setName(user.getLogin());
         }
-        log.debug("User - {} was successfully added.", user.getLogin());
+       // log.debug("User - {} was successfully added.", user.getLogin());
         users.put(user.getId(), user);
         return user;
     }
 
     @Override
-    public User addUserWithNoName(User user, Logger log) {
+    public User addUserWithNoName(User user) {
         if (user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
-            log.error(String.valueOf(UserValidationErrors.INVALID_EMAIL_ERROR));
+            //log.error(String.valueOf(UserValidationErrors.INVALID_EMAIL_ERROR));
             throw new ValidationException("Email field is rather empty or doesn't contain a '@' symbol.");
         }
         if (user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
-            log.error(String.valueOf(UserValidationErrors.INVALID_LOGIN_ERROR));
+          //  log.error(String.valueOf(UserValidationErrors.INVALID_LOGIN_ERROR));
             throw new ValidationException("Login field is rather empty or contains spaces.");
         }
         if (user.getBirthday().isAfter(LocalDate.now())) {
-            log.error(String.valueOf(UserValidationErrors.INVALID_BIRTHDAY_ERROR));
+           // log.error(String.valueOf(UserValidationErrors.INVALID_BIRTHDAY_ERROR));
             throw new ValidationException("Birthday cannot be past today's date.");
         }
         user.setId(users.size() + 1L);
         user.setName(user.getLogin());
-        log.info("User's name is set to login.");
-        log.debug("User - {} was successfully added.", user.getLogin());
+      //  log.info("User's name is set to login.");
+      //  log.debug("User - {} was successfully added.", user.getLogin());
         users.put(user.getId(), user);
         return user;
     }
 
     @Override
-    public User addUser(User user, Logger log) {
+    public User addUser(User user) {
         if (user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
-            log.error(String.valueOf(UserValidationErrors.INVALID_EMAIL_ERROR));
+           // log.error(String.valueOf(UserValidationErrors.INVALID_EMAIL_ERROR));
             throw new ValidationException("Email field is rather empty or doesn't contain a '@' symbol.");
         }
         if (user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
-            log.error(String.valueOf(UserValidationErrors.INVALID_LOGIN_ERROR));
+           // log.error(String.valueOf(UserValidationErrors.INVALID_LOGIN_ERROR));
             throw new ValidationException("Login field is rather empty or contains spaces.");
         }
         if (user.getBirthday().isAfter(LocalDate.now())) {
-            log.error(String.valueOf(UserValidationErrors.INVALID_BIRTHDAY_ERROR));
+          //  log.error(String.valueOf(UserValidationErrors.INVALID_BIRTHDAY_ERROR));
             throw new ValidationException("Birthday cannot be past today's date.");
         }
         if (user.getName().isEmpty() || user.getName().isBlank()) {
-            log.info("User's name is set to login.");
+           // log.info("User's name is set to login.");
             user.setName(user.getLogin());
         }
-        log.debug("User - {} was successfully added.", user.getLogin());
+       // log.debug("User - {} was successfully added.", user.getLogin());
         users.put(user.getId(), user);
         return user;
     }
 
     @Override
-    public User updateUserById(User user, Logger log) {
+    public User updateUserById(User user) {
         if (!users.containsKey(user.getId())) {
             throw new ValidationException("User does not exist.");
         }
         if (user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
-            log.error(String.valueOf(UserValidationErrors.INVALID_EMAIL_ERROR));
+           // log.error(String.valueOf(UserValidationErrors.INVALID_EMAIL_ERROR));
             throw new ValidationException("Email field is rather empty or doesn't contain a '@' symbol.");
         }
         if (user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
-            log.error(String.valueOf(UserValidationErrors.INVALID_LOGIN_ERROR));
+          //  log.error(String.valueOf(UserValidationErrors.INVALID_LOGIN_ERROR));
             throw new ValidationException("Login field is rather empty or contains spaces.");
         }
         if (user.getBirthday().isAfter(LocalDate.now())) {
-            log.error(String.valueOf(UserValidationErrors.INVALID_BIRTHDAY_ERROR));
+         //   log.error(String.valueOf(UserValidationErrors.INVALID_BIRTHDAY_ERROR));
             throw new ValidationException("Birthday cannot be past today's date.");
         }
         if (user.getName().isEmpty() || user.getName().isBlank()) {
-            log.info("User's name is set to login.");
+         //   log.info("User's name is set to login.");
             user.setName(user.getLogin());
         }
-        log.debug("User - {} was successfully updated.", user.getLogin());
+      //  log.debug("User - {} was successfully updated.", user.getLogin());
         users.put(user.getId(), user);
         return user;
     }
 
     @Override
-    public void deleteUserById(User user, Logger log) {
-        if (users.containsKey(user.getId())) {
+    public Long deleteUserById(Long id) {
+        /*if (users.containsKey(user.getId())) {
             users.remove(user.getId(), user);
-        }
+        }*/
+        users.values().removeIf(x -> users.containsKey(id));
+        return id;
     }
 }

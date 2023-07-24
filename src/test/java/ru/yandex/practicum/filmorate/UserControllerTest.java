@@ -5,11 +5,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import ru.yandex.practicum.filmorate.controllers.MainController;
+//import ru.yandex.practicum.filmorate.controllers.MainController;
+import ru.yandex.practicum.filmorate.controllers.UserController;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,12 +22,16 @@ import java.util.List;
 
 @SpringBootTest
 public class UserControllerTest {
-    private MainController controller;
     private User user;
+    private UserController controller;
+    private UserStorage userStorage;
+    private UserService userService;
 
     @BeforeEach
     public void init() {
-        controller = new MainController(new InMemoryUserStorage(), new InMemoryFilmStorage());
+        userService = new UserService(userStorage);
+
+        controller = new UserController(new InMemoryUserStorage(), userService);
         user = User.builder()
                 .id(1L)
                 .email("user123@mail.ru")

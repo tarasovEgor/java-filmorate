@@ -10,17 +10,17 @@ import java.util.Optional;
 public interface UserStorage {
     List<User> getAllUsers();
 
-    Optional<User> getUserById(Long id, Logger log);
+    Optional<User> getUserById(Long id);
 
-    User addUserWithExistingId(User user, Logger log);
+    User addUserWithExistingId(User user);
 
-    User addUserWithNoId(User user, Logger log);
+    User addUserWithNoId(User user);
 
-    User addUserWithNoName(User user, Logger log);
+    User addUserWithNoName(User user);
 
-    User addUser(User user, Logger log);
+    User addUser(User user);
 
-    User updateUserById(User user, Logger log);
+    User updateUserById(User user);
 
-    void deleteUserById(User user, Logger log);
+    Long deleteUserById(Long id);
 }
