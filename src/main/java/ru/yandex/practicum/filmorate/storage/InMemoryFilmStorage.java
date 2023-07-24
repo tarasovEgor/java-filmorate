@@ -29,22 +29,17 @@ public class InMemoryFilmStorage implements FilmStorage {
     public Film addFilmWithExistingIdOrFilmWithNoId(Film film) {
         film.setId(films.size() + 1L);
         if (film.getName().isEmpty()) {
-            //log.error(String.valueOf(FilmValidationErrors.INVALID_NAME_ERROR));
             throw new ValidationException("Please, enter the film's name.");
         }
         if (film.getDescription().length() > 200) {
-            //log.error(String.valueOf(FilmValidationErrors.INVALID_DESCRIPTION_ERROR));
             throw new ValidationException("Film's description can't be more than 200 characters long");
         }
         if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
-            //log.error(String.valueOf(FilmValidationErrors.INVALID_RELEASE_DATE_ERROR));
             throw new ValidationException("Film's release date can't be earlier than 28-12-1895.");
         }
         if (film.getDuration() < 0) {
-            //log.error(String.valueOf(FilmValidationErrors.INVALID_DURATION_ERROR));
             throw new ValidationException("Film's duration can't be negative.");
         }
-        //log.debug("{} - has been successfully added.", film.getName());
         films.put(film.getId(), film);
         return film;
     }
@@ -52,22 +47,17 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Film addFilm(Film film) {
         if (film.getName().isEmpty()) {
-           // log.error(String.valueOf(FilmValidationErrors.INVALID_NAME_ERROR));
             throw new ValidationException("Please, enter the film's name.");
         }
         if (film.getDescription().length() > 200) {
-            //log.error(String.valueOf(FilmValidationErrors.INVALID_DESCRIPTION_ERROR));
             throw new ValidationException("Film's description can't be more than 200 characters long");
         }
         if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
-            //log.error(String.valueOf(FilmValidationErrors.INVALID_RELEASE_DATE_ERROR));
             throw new ValidationException("Film's release date can't be earlier than 28-12-1895.");
         }
         if (film.getDuration() < 0) {
-            //log.error(String.valueOf(FilmValidationErrors.INVALID_DURATION_ERROR));
             throw new ValidationException("Film's duration can't be negative.");
         }
-        //log.debug("{} - has been successfully added.", film.getName());
         films.put(film.getId(), film);
         return film;
     }
@@ -78,31 +68,23 @@ public class InMemoryFilmStorage implements FilmStorage {
             throw new ValidationException("Film was not added");
         }
         if (film.getName().isEmpty()) {
-            //log.error(String.valueOf(FilmValidationErrors.INVALID_NAME_ERROR));
             throw new ValidationException("Please, enter the film's name.");
         }
         if (film.getDescription().length() > 200) {
-            //log.error(String.valueOf(FilmValidationErrors.INVALID_DESCRIPTION_ERROR));
             throw new ValidationException("Film's description can't be more than 200 characters long");
         }
         if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
-            //log.error(String.valueOf(FilmValidationErrors.INVALID_RELEASE_DATE_ERROR));
             throw new ValidationException("Film's release date can't be earlier than 28-12-1895.");
         }
         if (film.getDuration() < 0) {
-           // log.error(String.valueOf(FilmValidationErrors.INVALID_DURATION_ERROR));
             throw new ValidationException("Film's duration can't be negative.");
         }
-       // log.debug("{} - has been successfully updated.", film.getName());
         films.put(film.getId(), film);
         return film;
     }
 
     @Override
     public Long deleteFilmById(Long id) {
-        /*if (films.containsKey(film.getId())) {
-            films.remove(film.getId(), film);
-        }*/
         films.values().removeIf(x -> films.containsKey(id));
         return id;
     }
