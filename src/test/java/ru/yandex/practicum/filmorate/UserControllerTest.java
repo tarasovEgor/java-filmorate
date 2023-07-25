@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import ru.yandex.practicum.filmorate.controllers.UserController;
@@ -25,9 +26,11 @@ public class UserControllerTest {
 
     @BeforeEach
     public void init() {
+        userStorage = new InMemoryUserStorage();
+
         userService = new UserService(userStorage);
 
-        controller = new UserController(new InMemoryUserStorage(), userService);
+        controller = new UserController(userService);
         user = User.builder()
                 .id(1L)
                 .email("user123@mail.ru")

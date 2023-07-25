@@ -12,7 +12,6 @@ import ru.yandex.practicum.filmorate.storage.UserStorage;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
 @Service
 public class FilmService {
     private final UserStorage userStorage;
@@ -22,6 +21,30 @@ public class FilmService {
     public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
         this.userStorage = userStorage;
         this.filmStorage = filmStorage;
+    }
+
+    public List<Film> getAllFilms() {
+        return filmStorage.getAllFilms();
+    }
+
+    public Optional<Film> getFilmById(Long id) {
+        return filmStorage.getFilmById(id);
+    }
+
+    public Film addFilmWithExistingIdOrFilmWithNoId(Film film) {
+        return filmStorage.addFilmWithExistingIdOrFilmWithNoId(film);
+    }
+
+    public Film addFilm(Film film) {
+        return filmStorage.addFilm(film);
+    }
+
+    public Film updateFilmById(Film film) {
+        return filmStorage.updateFilmById(film);
+    }
+
+    public Long deleteFilmById(Long id) {
+        return filmStorage.deleteFilmById(id);
     }
 
     public Long addLikeToAFilm(Long filmId, Long userId) {

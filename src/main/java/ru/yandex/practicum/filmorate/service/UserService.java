@@ -19,6 +19,38 @@ public class UserService {
         this.userStorage = userStorage;
     }
 
+    public List<User> getAllUsers() {
+        return userStorage.getAllUsers();
+    }
+
+    public Optional<User> getUserById(Long id) {
+        return userStorage.getUserById(id);
+    }
+
+    public User addUserWithExistingId(User user) {
+        return userStorage.addUserWithExistingId(user);
+    }
+
+    public User addUserWithNoId(User user) {
+        return userStorage.addUserWithNoId(user);
+    }
+
+    public User addUserWithNoName(User user) {
+        return userStorage.addUserWithNoName(user);
+    }
+
+    public User addUser(User user) {
+        return userStorage.addUser(user);
+    }
+
+    public User updateUserById(User user) {
+        return userStorage.updateUserById(user);
+    }
+
+    public Long deleteUserById(Long id) {
+        return userStorage.deleteUserById(id);
+    }
+
     public List<Long> addFriend(Long userId, Long newFriendsId) {
         List<Long> friendsIds = new ArrayList<>();
 

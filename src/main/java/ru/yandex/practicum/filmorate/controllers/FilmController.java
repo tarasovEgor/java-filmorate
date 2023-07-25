@@ -6,7 +6,6 @@ import ru.yandex.practicum.filmorate.exceptions.IncorrectPathVariableException;
 import ru.yandex.practicum.filmorate.exceptions.ObjectNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -14,50 +13,47 @@ import java.util.Optional;
 
 @RestController
 public class FilmController {
-    private InMemoryFilmStorage inMemoryFilmStorage;
     private FilmService filmService;
 
-    public FilmController(InMemoryFilmStorage inMemoryFilmStorage,
-                          FilmService filmService) {
-        this.inMemoryFilmStorage = inMemoryFilmStorage;
+    public FilmController(FilmService filmService) {
         this.filmService = filmService;
     }
 
     @GetMapping("/films")
     public List<Film> getAllFilms() {
-        return inMemoryFilmStorage.getAllFilms();
+        return filmService.getAllFilms();
     }
 
     @GetMapping("films/{id}")
     public Optional<Film> getFilmById(@PathVariable String id) {
-        if (inMemoryFilmStorage.getFilmById(Long.valueOf(id)).isEmpty()) {
+        if (filmService.getFilmById(Long.valueOf(id)).isEmpty()) {
             throw new ObjectNotFoundException("Film not found");
         } else {
-            return inMemoryFilmStorage.getFilmById(Long.valueOf(id));
+            return filmService.getFilmById(Long.valueOf(id));
         }
     }
 
     @PostMapping("/films")
     public Film createFilm(@Valid @RequestBody Film film) {
-        if (inMemoryFilmStorage.getAllFilms().contains(film)) {
-            inMemoryFilmStorage.addFilmWithExistingIdOrFilmWithNoId(film);
+        if (filmService.getAllFilms().contains(film)) {
+            filmService.addFilmWithExistingIdOrFilmWithNoId(film);
         } else if (film.getId() == null) {
-            inMemoryFilmStorage.addFilmWithExistingIdOrFilmWithNoId(film);
+            filmService.addFilmWithExistingIdOrFilmWithNoId(film);
         } else {
-            inMemoryFilmStorage.addFilm(film);
+            filmService.addFilm(film);
         }
         return film;
     }
 
     @PutMapping("/films")
     public Film updateFilm(@Valid @RequestBody Film film) {
-        inMemoryFilmStorage.updateFilmById(film);
+        filmService.updateFilmById(film);
         return film;
     }
 
     @DeleteMapping("films/{id}")
     public Long deleteFilmById(@PathVariable String id) {
-        return inMemoryFilmStorage.deleteFilmById(Long.valueOf(id));
+        return filmService.deleteFilmById(Long.valueOf(id));
     }
 
     @GetMapping("/films/popular")

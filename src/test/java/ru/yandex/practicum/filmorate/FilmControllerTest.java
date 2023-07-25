@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import ru.yandex.practicum.filmorate.controllers.FilmController;
@@ -11,6 +12,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.time.LocalDate;
@@ -27,9 +29,12 @@ public class FilmControllerTest {
 
     @BeforeEach
     public void init() {
+        filmStorage = new InMemoryFilmStorage();
+        userStorage = new InMemoryUserStorage();
+
         filmService = new FilmService(filmStorage, userStorage);
 
-        controller = new FilmController(new InMemoryFilmStorage(), filmService);
+        controller = new FilmController(filmService);
         film = Film.builder()
                 .id(1L)
                 .name("The Godfather")
