@@ -3,11 +3,17 @@ package ru.yandex.practicum.filmorate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-import ru.yandex.practicum.filmorate.controllers.MainController;
+import ru.yandex.practicum.filmorate.controllers.FilmController;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,14 +21,22 @@ import java.util.List;
 
 @SpringBootTest
 public class FilmControllerTest {
-    private MainController controller;
     private Film film;
+    private FilmController controller;
+    private FilmStorage filmStorage;
+    private UserStorage userStorage;
+    private FilmService filmService;
 
     @BeforeEach
     public void init() {
-        controller = new MainController();
+        filmStorage = new InMemoryFilmStorage();
+        userStorage = new InMemoryUserStorage();
+
+        filmService = new FilmService(filmStorage, userStorage);
+
+        controller = new FilmController(filmService);
         film = Film.builder()
-                .id(1)
+                .id(1L)
                 .name("The Godfather")
                 .description("Don Vito Corleone" +
                         ", head of a mafia family, decides to hand over " +
@@ -37,7 +51,7 @@ public class FilmControllerTest {
     @Test
     public void shouldReturnAllFilms() {
         Film newFilm = Film.builder()
-                .id(1)
+                .id(1L)
                 .name("The Godfather")
                 .description("Don Vito Corleone" +
                         ", head of a mafia family, decides to hand over " +
@@ -61,7 +75,7 @@ public class FilmControllerTest {
     @Test
     public void shouldAddAFilm() {
         Film newFilm = Film.builder()
-                .id(1)
+                .id(1L)
                 .name("The Godfather")
                 .description("Don Vito Corleone" +
                         ", head of a mafia family, decides to hand over " +
@@ -82,7 +96,7 @@ public class FilmControllerTest {
     @Test
     public void shouldUpdateFilm() {
         Film newFilm = Film.builder()
-                .id(1)
+                .id(1L)
                 .name("The Godfather")
                 .description("Don Vito Corleone" +
                         ", head of a mafia family, decides to hand over " +
@@ -96,7 +110,7 @@ public class FilmControllerTest {
         controller.createFilm(newFilm);
 
         Film updatedFilm = Film.builder()
-                .id(1)
+                .id(1L)
                 .name("Forest Gump")
                 .description("The movie Forrest Gump follows the life events" +
                         " of a man who shares the name as the title of the film.")
@@ -114,7 +128,7 @@ public class FilmControllerTest {
     @Test
     public void shouldThrowValidationExceptionWhenFilmsNameIsEmpty() {
         Film newFilm = Film.builder()
-                .id(1)
+                .id(1L)
                 .name("")
                 .description("Don Vito Corleone" +
                         ", head of a mafia family, decides to hand over " +
@@ -136,7 +150,7 @@ public class FilmControllerTest {
     @Test
     public void shouldThrowValidationExceptionWhenFilmsDescriptionLengthIsGreaterThan200() {
         Film newFilm = Film.builder()
-                .id(1)
+                .id(1L)
                 .name("Forest Gump")
                 .description("\"The movie Forrest Gump follows the life events " +
                         " of a man who shares the name as the title of the film. " +
@@ -157,7 +171,7 @@ public class FilmControllerTest {
     @Test
     public void shouldThrowValidationExceptionWhenFilmsReleaseDateIsBefore1895_12_28() {
         Film newFilm = Film.builder()
-                .id(1)
+                .id(1L)
                 .name("The Godfather")
                 .description("Don Vito Corleone" +
                         ", head of a mafia family, decides to hand over " +
@@ -179,7 +193,7 @@ public class FilmControllerTest {
     @Test
     public void shouldThrowValidationExceptionWhenFilmsDurationIsNegative() {
         Film newFilm = Film.builder()
-                .id(1)
+                .id(1L)
                 .name("The Godfather")
                 .description("Don Vito Corleone" +
                         ", head of a mafia family, decides to hand over " +
@@ -201,7 +215,7 @@ public class FilmControllerTest {
     @Test
     public void shouldThrowValidationExceptionWhenUpdatedFilmsNameIsEmpty() {
         Film newFilm = Film.builder()
-                .id(1)
+                .id(1L)
                 .name("The Godfather")
                 .description("Don Vito Corleone" +
                         ", head of a mafia family, decides to hand over " +
@@ -215,7 +229,7 @@ public class FilmControllerTest {
         controller.createFilm(newFilm);
 
         Film updatedFilm = Film.builder()
-                .id(1)
+                .id(1L)
                 .name("")
                 .description("The movie Forrest Gump follows the life events" +
                         " of a man who shares the name as the title of the film.")
@@ -234,7 +248,7 @@ public class FilmControllerTest {
     @Test
     public void shouldThrowValidationExceptionWhenUpdatedFilmsDescriptionIsGreaterThan200() {
         Film newFilm = Film.builder()
-                .id(1)
+                .id(1L)
                 .name("The Godfather")
                 .description("Don Vito Corleone" +
                         ", head of a mafia family, decides to hand over " +
@@ -248,7 +262,7 @@ public class FilmControllerTest {
         controller.createFilm(newFilm);
 
         Film updatedFilm = Film.builder()
-                .id(1)
+                .id(1L)
                 .name("Forest Gump")
                 .description("\"The movie Forrest Gump follows the life events " +
                         " of a man who shares the name as the title of the film. " +
@@ -269,7 +283,7 @@ public class FilmControllerTest {
     @Test
     public void shouldThrowValidationExceptionWhenUpdatedFilmsReleaseDateIsBefore1895_12_28() {
         Film newFilm = Film.builder()
-                .id(1)
+                .id(1L)
                 .name("The Godfather")
                 .description("Don Vito Corleone" +
                         ", head of a mafia family, decides to hand over " +
@@ -283,7 +297,7 @@ public class FilmControllerTest {
         controller.createFilm(newFilm);
 
         Film updatedFilm = Film.builder()
-                .id(1)
+                .id(1L)
                 .name("Forest Gump")
                 .description("The movie Forrest Gump follows the life events" +
                         " of a man who shares the name as the title of the film.")
@@ -302,7 +316,7 @@ public class FilmControllerTest {
     @Test
     public void shouldThrowValidationExceptionWhenUpdatedFilmsDurationIsNegative() {
         Film newFilm = Film.builder()
-                .id(1)
+                .id(1L)
                 .name("The Godfather")
                 .description("Don Vito Corleone" +
                         ", head of a mafia family, decides to hand over " +
@@ -316,7 +330,7 @@ public class FilmControllerTest {
         controller.createFilm(newFilm);
 
         Film updatedFilm = Film.builder()
-                .id(1)
+                .id(1L)
                 .name("Forest Gump")
                 .description("The movie Forrest Gump follows the life events" +
                         " of a man who shares the name as the title of the film.")
