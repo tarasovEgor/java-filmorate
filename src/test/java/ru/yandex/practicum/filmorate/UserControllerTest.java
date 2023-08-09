@@ -183,7 +183,7 @@ public class UserControllerTest {
                 .email("user123@mail.ru")
                 .login("user123")
                 .name("name")
-                .birthday(LocalDate.of(2023, 7, 30))
+                .birthday(LocalDate.of(2023, 9, 30))
                 .build();
 
         final ValidationException exc = assertThrows(
