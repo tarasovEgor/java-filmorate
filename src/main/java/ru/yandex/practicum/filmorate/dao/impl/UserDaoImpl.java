@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
@@ -69,6 +70,9 @@ public class UserDaoImpl implements UserStorage {
     public User addUser(User user) {
         if (user.getId() == null) {
             user.setId(this.getAllUsers().size() + 1L);
+        }
+        if (user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
+            throw new ValidationException("Login field is rather empty or contains spaces.");
         }
         String sqlQuery = "INSERT INTO users (name, login, email, birthday) VALUES (?, ?, ?, ?)";
 
