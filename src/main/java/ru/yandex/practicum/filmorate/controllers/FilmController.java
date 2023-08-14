@@ -35,14 +35,14 @@ public class FilmController {
 
     @PostMapping("/films")
     public Film createFilm(@Valid @RequestBody Film film) {
-        if (filmService.getAllFilms().contains(film)) {
-            filmService.addFilmWithExistingIdOrFilmWithNoId(film);
-        } else if (film.getId() == null) {
-            filmService.addFilmWithExistingIdOrFilmWithNoId(film);
-        } else {
-            filmService.addFilm(film);
-        }
-        return film;
+//        if (filmService.getAllFilms().contains(film)) {
+//            filmService.addFilmWithExistingIdOrFilmWithNoId(film);
+//        } else if (film.getId() == null) {
+//            filmService.addFilmWithExistingIdOrFilmWithNoId(film);
+//        } else {
+//            filmService.addFilm(film);
+//        }
+        return filmService.addFilm(film);
     }
 
     @PutMapping("/films")

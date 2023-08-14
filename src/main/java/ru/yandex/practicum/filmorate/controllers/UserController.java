@@ -35,16 +35,17 @@ public class UserController {
 
     @PostMapping("/users")
     public User createUser(@Valid @RequestBody User user) {
-        if (userService.getAllUsers().contains(user)) {
-            userService.addUserWithExistingId(user);
-        } else if (user.getId() == null) {
-            userService.addUserWithNoId(user);
-        } else if (user.getName() == null) {
-            userService.addUserWithNoName(user);
-        } else {
-            userService.addUser(user);
-        }
-        return user;
+//        if (userService.getAllUsers().contains(user)) {
+//            userService.addUserWithExistingId(user);
+//        } else if (user.getId() == null) {
+//            userService.addUserWithNoId(user);
+//        } else if (user.getName() == null) {
+//            userService.addUserWithNoName(user);
+//        } else {
+//            userService.addUser(user);
+//        }
+//        return user;
+        return userService.addUser(user);
     }
 
     @PutMapping("/users")
