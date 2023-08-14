@@ -67,6 +67,9 @@ public class UserDaoImpl implements UserStorage {
 
     @Override
     public User addUser(User user) {
+        if (user.getId() == null) {
+            user.setId(this.getAllUsers().size() + 1L);
+        }
         String sqlQuery = "INSERT INTO users (name, login, email, birthday) VALUES (?, ?, ?, ?)";
 
         jdbcTemplate.update(sqlQuery,
