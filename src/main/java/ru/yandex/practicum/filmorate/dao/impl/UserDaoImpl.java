@@ -12,6 +12,7 @@ import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,6 +74,12 @@ public class UserDaoImpl implements UserStorage {
         }
         if (user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
             throw new ValidationException("Login field is rather empty or contains spaces.");
+        }
+        if (user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
+            throw new ValidationException("Email field is rather empty or doesn't contain a '@' symbol.");
+        }
+        if (user.getBirthday().isAfter(LocalDate.now())) {
+            throw new ValidationException("Birthday cannot be past today's date.");
         }
         String sqlQuery = "INSERT INTO users (name, login, email, birthday) VALUES (?, ?, ?, ?)";
 
