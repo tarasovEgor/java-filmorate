@@ -128,4 +128,9 @@ public class InMemoryUserStorage implements UserStorage {
         users.values().removeIf(x -> users.containsKey(id));
         return id;
     }
+
+    @Override
+    public List<Long> addFriends(Long id, Long friendId) {
+        return null;
+    }
 }

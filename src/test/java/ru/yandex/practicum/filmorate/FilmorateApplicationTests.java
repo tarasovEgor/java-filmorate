@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate;
 
 import lombok.RequiredArgsConstructor;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import ru.yandex.practicum.filmorate.dao.impl.FilmDaoImpl;
 import ru.yandex.practicum.filmorate.dao.impl.UserDaoImpl;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
+
 
 import java.time.LocalDate;
 
@@ -31,6 +34,17 @@ class FilmorateApplicationTests {
 	private final UserDaoImpl userStorage;
 	private final FilmDaoImpl filmStorage;
 
+	//private UserController controller;
+	private UserService userService;
+
+	@BeforeEach
+	public void init() {
+
+		userService = new UserService(userStorage);
+
+		//controller = new UserController(userService);
+
+	}
 	@Test
 	void shouldFindUserById() {
 		User newUser = User.builder()
@@ -113,6 +127,7 @@ class FilmorateApplicationTests {
 	@Test
 	void shouldUpdateUser() {
 		User user1 = User.builder()
+				.id(1L)
 				.name("user1")
 				.login("test")
 				.email("test@mail.com")
@@ -291,5 +306,28 @@ class FilmorateApplicationTests {
 
 		assertEquals(filmStorage.getAllFilms().size(), 0);
 		assertEquals(filmStorage.getFilmById(1L), Optional.empty());
+	}
+
+	@Test
+	void shouldReturnAFriendList() {
+		User user1 = User.builder()
+				.name("user1")
+				.login("test")
+				.email("test@mail.com")
+				.birthday(LocalDate.of(1988, 5, 12))
+				.build();
+
+		User user2 = User.builder()
+				.name("user2")
+				.login("test")
+				.email("test@mail.com")
+				.birthday(LocalDate.of(1988, 5, 12))
+				.build();
+
+		userStorage.addUser(user1);
+		userStorage.addUser(user2);
+
+		System.out.println(userStorage.addFriends(user1.getId(), user2.getId()));
+
 	}
 }

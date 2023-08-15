@@ -1,5 +1,7 @@
 package ru.yandex.practicum.filmorate.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
+    private final Logger log = LoggerFactory.getLogger(UserService.class);
     private final UserStorage userStorage;
 
     @Autowired
@@ -53,15 +56,16 @@ public class UserService {
         return userStorage.deleteUserById(id);
     }
 
-    public List<Long> addFriend(Long userId, Long newFriendsId) {
-        List<Long> friendsIds = new ArrayList<>();
+    public List<Long> addFriend(Long userId, Long friendId) {
+        return userStorage.addFriends(userId, friendId);
+        /*List<Long> friendsIds = new ArrayList<>();
 
-        if (userId == null || newFriendsId == null) {
+        if (userId == null || friendId == null) {
             throw new ValidationException("One of the arguments is missing.");
         }
 
         Optional<User> user = userStorage.getUserById(userId);
-        Optional<User> friend = userStorage.getUserById(newFriendsId);
+        Optional<User> friend = userStorage.getUserById(friendId);
 
         if (user.isPresent() && friend.isPresent()) {
             if (user.get().getFriends() == null && friend.get().getFriends() == null) {
@@ -94,7 +98,36 @@ public class UserService {
                 }
             }
         }
-        return friendsIds;
+        return friendsIds;*/
+
+        /*List<Long> friendsIds = new ArrayList<>();
+
+        if (userId == null || friendId == null) {
+            throw new ValidationException("One of the arguments is missing.");
+        }
+
+        Optional<User> user = userStorage.getUserById(userId);
+        Optional<User> friend = userStorage.getUserById(friendId);
+
+        if (user.get().getFriends().contains(friend.get().getId())) {
+            throw new ValidationException("A friend has already been added to user's friends list.");
+        }
+        if (user.get().getId() == friend.get().getId()) {
+            throw new ValidationException("User cannot be added to its own friend list.");
+        }
+
+        user.get().getFriends().add(friend.get().getId());
+        friend.get().getFriends().add(user.get().getId());
+
+        user.get().setIsFriendStatus(true);
+        friend.get().setIsFriendStatus(true);
+
+
+        log.info("User '{}' is now friends with user '{}'.", user.get().getLogin(), user.get().getLogin());
+
+        friendsIds = List.of(user.get().getId(), friend.get().getId());
+
+        return friendsIds;*/
     }
 
     public String deleteFriend(Long userId, Long friendId) {
@@ -164,4 +197,8 @@ public class UserService {
         }
         return commonFriends;
     }
+
+
+
+
 }
