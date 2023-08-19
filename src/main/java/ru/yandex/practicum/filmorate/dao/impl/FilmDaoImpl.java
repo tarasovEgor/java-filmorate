@@ -306,7 +306,7 @@ public class FilmDaoImpl implements FilmDAO {
                     "               GROUP BY film_id " +
                     "               HAVING COUNT(*) >= 1 " +
                     "               ORDER BY COUNT(*) DESC " +
-                    "               LIMIT " + count +")";
+                    "               LIMIT " + count + ")";
 
 
             return jdbcTemplate.query(sqlQuery, this::mapRowToFilm);
