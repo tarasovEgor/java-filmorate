@@ -134,8 +134,6 @@ public class FilmDaoImpl implements FilmDAO {
 
 
     public Set<Genre> addGenreToFilmObject(Long filmId) {
-        //String sqlQuery = "SELECT genre_id FROM film_genres WHERE film_id = ?";
-
         String sqlQuery = "SELECT * FROM genres WHERE genre_id IN (SELECT genre_id FROM film_genres " +
                 "WHERE film_id = " + filmId + ")";
 
@@ -183,17 +181,17 @@ public class FilmDaoImpl implements FilmDAO {
         String sqlQuery2 = "UPDATE film_genres SET film_id = ?, genre_id = ? " +
                 "WHERE film_id = " + film.getId();
 
-        if (film.getGenres() == null) {
+        if (film.getGenres() != null) {
+            this.addGenreToDB(film.getGenres(), film.getId());
+        } else {
             film.setGenres(new HashSet<>());
         }
 
-        for (Genre genre : film.getGenres()) {
+        /*for (Genre genre : film.getGenres()) {
             jdbcTemplate.update(sqlQuery2,
                     film.getId(),
                     genre.getId());
-        }
-
-
+        }*/
         return film;
     }
 
