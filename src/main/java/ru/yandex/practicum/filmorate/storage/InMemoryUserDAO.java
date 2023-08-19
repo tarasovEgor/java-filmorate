@@ -11,7 +11,7 @@ import java.util.*;
 
 @Component
 @Qualifier("inMemoryUserStorage")
-public class InMemoryUserStorage implements UserStorage {
+public class InMemoryUserDAO implements UserDAO {
     private final Map<Long, User> users = new HashMap<>();
 
     @Override
@@ -131,6 +131,21 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public List<Long> addFriends(Long id, Long friendId) {
+        return null;
+    }
+
+    @Override
+    public Long deleteFriend(Long userId, Long friendId) {
+        return null;
+    }
+
+    @Override
+    public List<User> getUsersFriends(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<User> getCommonFriends(Long userId, Long friendId) {
         return null;
     }
 }

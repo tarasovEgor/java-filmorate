@@ -7,20 +7,17 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exceptions.ObjectNotFoundException;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
+import ru.yandex.practicum.filmorate.storage.UserDAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @Qualifier("userDaoImpl")
-public class UserDaoImpl implements UserStorage {
+public class UserDaoImpl implements UserDAO {
 
     private final Logger log = LoggerFactory.getLogger(UserDaoImpl.class);
 
@@ -59,7 +56,6 @@ public class UserDaoImpl implements UserStorage {
                     .login(userRows.getString("login"))
                     .email(userRows.getString("email"))
                     .birthday(userRows.getDate("birthday").toLocalDate())
-                    .friends(new HashSet<>())
                     .build();
 
             log.info("Найден пользователь: {} {}", user.getId(), user.getName());
@@ -76,7 +72,7 @@ public class UserDaoImpl implements UserStorage {
         if (user.getId() == null) {
             user.setId(this.getAllUsers().size() + 1L);
         }
-        if (user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
+        /*if (user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
             throw new ValidationException("Login field is rather empty or contains spaces.");
         }
         if (user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
@@ -85,11 +81,15 @@ public class UserDaoImpl implements UserStorage {
         if (user.getBirthday().isAfter(LocalDate.now())) {
             throw new ValidationException("Birthday cannot be past today's date.");
         }
+        if (user.getFriends() == null) {
+            user.setFriends(new HashSet<>());
+        }
         if (user.getName() == null) {
             user.setName(user.getLogin());
         } else if (user.getName().isEmpty() || user.getName().isBlank()) {
             user.setName(user.getLogin());
-        }
+        }*/
+        UserValidator.isUserValid(user);
         String sqlQuery = "INSERT INTO users (name, login, email, birthday) VALUES (?, ?, ?, ?)";
 
         jdbcTemplate.update(sqlQuery,
@@ -107,7 +107,7 @@ public class UserDaoImpl implements UserStorage {
                 throw new ObjectNotFoundException("User doesn't exist.");
             }
         }
-        if (user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
+        /*if (user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
             throw new ValidationException("Email field is rather empty or doesn't contain a '@' symbol.");
         }
         if (user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
@@ -120,7 +120,8 @@ public class UserDaoImpl implements UserStorage {
             user.setName(user.getLogin());
         } else if (user.getName().isEmpty() || user.getName().isBlank()) {
             user.setName(user.getLogin());
-        }
+        }*/
+        UserValidator.isUserValid(user);
 
         String sqlQuery = "UPDATE users SET " +
                 "name = ?, login = ?, email = ?, birthday = ? " +
@@ -136,8 +137,6 @@ public class UserDaoImpl implements UserStorage {
         return user;
     }
 
-
-
     @Override
     public Long deleteUserById(Long id) {
         String sqlQuery = "DELETE FROM users WHERE id = ?";
@@ -148,33 +147,38 @@ public class UserDaoImpl implements UserStorage {
 
     @Override
     public List<Long> addFriends(Long userId, Long friendId) {
-          /*String sqlQuery = "INSERT INTO friends (user_id, is_approved, friend_id) VALUES (?, 'false', ?)";
+        String sqlQuery = "INSERT INTO friends (user_id, is_approved, friend_id) VALUES (?, 'true', ?)";
 
-          jdbcTemplate.update(sqlQuery,
-                  userId,
-                  friendId);*/
-
-        Optional<User> userOptional = this.getUserById(userId);
-        Optional<User> friendOptional = this.getUserById(friendId);
-
-        userOptional.get().getFriends().add(friendOptional.get().getId());
-        friendOptional.get().getFriends().add(userOptional.get().getId());
-
-//        String sqlQuery = "UPDATE users SET name = ?, login = ?, email = ?, birthday = ? WHERE id = ?";
-//
-//        jdbcTemplate.update(sqlQuery,
-//                userOptional.get().getName(),
-//                userOptional.get().getLogin(),
-//                userOptional.get().getEmail(),
-//                userOptional.get().getBirthday(),
-//                userOptional.get().getId());
-
-        /*String sqlQuery2 = "INSERT INTO friends (user_id, is_approved, friend_id) VALUES (?, 'false', ?)";
-
-        jdbcTemplate.update(sqlQuery2,
+        jdbcTemplate.update(sqlQuery,
                 userId,
-                friendId);*/
-        return List.of(userOptional.get().getId(), friendOptional.get().getId());
+                friendId);
+
+        return List.of(userId, friendId);
+    }
+
+    @Override
+    public Long deleteFriend(Long userId, Long friendId) {
+        String sqlQuery = "DELETE FROM friends WHERE user_id = ? AND friend_id = ?";
+
+        jdbcTemplate.update(sqlQuery, userId, friendId);
+        return friendId;
+    }
+
+    @Override
+    public List<User> getUsersFriends(Long id) {
+        String sqlQuery = "SELECT * FROM users WHERE id IN " +
+                "(SELECT friend_id FROM friends WHERE user_id = " + id + ")";
+
+        return jdbcTemplate.query(sqlQuery, this::mapRowToUser);
+    }
+
+    @Override
+    public List<User> getCommonFriends(Long userId, Long friendId) {
+        String sqlQuery = "SELECT * FROM users WHERE id IN " +
+                "(SELECT friend_id FROM friends WHERE user_id = " + userId + " OR user_id = " + friendId +
+                " GROUP BY friend_id HAVING COUNT(*) > 1)";
+
+        return jdbcTemplate.query(sqlQuery, this::mapRowToUser);
     }
 
     @Override

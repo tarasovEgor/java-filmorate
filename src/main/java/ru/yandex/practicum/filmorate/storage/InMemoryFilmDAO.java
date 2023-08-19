@@ -4,12 +4,14 @@ import org.springframework.stereotype.Component;
 
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.model.MPA;
 
 import java.time.LocalDate;
 import java.util.*;
 
 @Component
-public class InMemoryFilmStorage implements FilmStorage {
+public class InMemoryFilmDAO implements FilmDAO {
     private final Map<Long, Film> films = new HashMap<>();
 
     @Override
@@ -87,5 +89,39 @@ public class InMemoryFilmStorage implements FilmStorage {
     public Long deleteFilmById(Long id) {
         films.values().removeIf(x -> films.containsKey(id));
         return id;
+    }
+    @Override
+    public List<Genre> getAllGenres() {
+        return null;
+    }
+
+    @Override
+    public Optional<Genre> getGenreById(Integer id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<MPA> getAllMPAs() {
+        return null;
+    }
+
+    @Override
+    public Optional<MPA> getMPAById(Integer id) {
+        return null;
+    }
+
+    @Override
+    public List<Long> addLikeToAFilm(Long filmId, Long userId) {
+        return null;
+    }
+
+    @Override
+    public List<Film> getTopTenMostPopularFilms(Long count) {
+        return null;
+    }
+
+    @Override
+    public Long removeLikeFromAFilm(Long filmId, Long userId) {
+        return null;
     }
 }

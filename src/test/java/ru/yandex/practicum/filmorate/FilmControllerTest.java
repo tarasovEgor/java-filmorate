@@ -10,10 +10,10 @@ import ru.yandex.practicum.filmorate.controllers.FilmController;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.storage.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
+import ru.yandex.practicum.filmorate.storage.FilmDAO;
+import ru.yandex.practicum.filmorate.storage.InMemoryFilmDAO;
+import ru.yandex.practicum.filmorate.storage.InMemoryUserDAO;
+import ru.yandex.practicum.filmorate.storage.UserDAO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,16 +23,16 @@ import java.util.List;
 public class FilmControllerTest {
     private Film film;
     private FilmController controller;
-    private FilmStorage filmStorage;
-    private UserStorage userStorage;
+    private FilmDAO filmDAO;
+    private UserDAO userDAO;
     private FilmService filmService;
 
     @BeforeEach
     public void init() {
-        filmStorage = new InMemoryFilmStorage();
-        userStorage = new InMemoryUserStorage();
+        filmDAO = new InMemoryFilmDAO();
+        userDAO = new InMemoryUserDAO();
 
-        filmService = new FilmService(filmStorage, userStorage);
+        filmService = new FilmService(filmDAO, userDAO);
 
         controller = new FilmController(filmService);
         film = Film.builder()

@@ -10,8 +10,8 @@ import ru.yandex.practicum.filmorate.controllers.UserController;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
+import ru.yandex.practicum.filmorate.storage.InMemoryUserDAO;
+import ru.yandex.practicum.filmorate.storage.UserDAO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,14 +21,14 @@ import java.util.List;
 public class UserControllerTest {
     private User user;
     private UserController controller;
-    private UserStorage userStorage;
+    private UserDAO userDAO;
     private UserService userService;
 
     @BeforeEach
     public void init() {
-        userStorage = new InMemoryUserStorage();
+        userDAO = new InMemoryUserDAO();
 
-        userService = new UserService(userStorage);
+        userService = new UserService(userDAO);
 
         controller = new UserController(userService);
         user = User.builder()
