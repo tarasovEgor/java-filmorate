@@ -46,6 +46,7 @@ class FilmorateApplicationTests {
 		//controller = new UserController(userService);
 
 	}
+	
 	@Test
 	void shouldFindUserById() {
 		User newUser = User.builder()
