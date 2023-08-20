@@ -71,7 +71,7 @@ public class FilmDaoImpl implements FilmDAO {
 
         if (filmRow.next()) {
             Film film = Film.builder()
-                    .id(Long.parseLong(filmRow.getString("id")))
+                    .id(filmRow.getLong("id"))
                     .name(filmRow.getString("name"))
                     .description(filmRow.getString("description"))
                     .releaseDate(filmRow.getDate("release_date").toLocalDate())
@@ -132,13 +132,30 @@ public class FilmDaoImpl implements FilmDAO {
         }
     }
 
-
     public Set<Genre> addGenreToFilmObject(Long filmId) {
         String sqlQuery = "SELECT * FROM genres WHERE genre_id IN (SELECT genre_id FROM film_genres " +
                 "WHERE film_id = " + filmId + ")";
 
         Set<Genre> genres = new HashSet<>(jdbcTemplate.query(sqlQuery, this::mapRowToGenre));
         return genres;
+    }
+
+
+    public void updateGenreInDB(Set<Genre> genres, Long filmId) {
+        String updateQuery = "UPDATE film_genres SET genre_id = ? WHERE film_id = ?";
+        String removeQuery = "DELETE FROM film_genres WHERE film_id = ?";
+
+        if (genres == null || genres.isEmpty()) {
+            jdbcTemplate.update(removeQuery, filmId);
+        } else {
+            for (Genre genre : genres) {
+                jdbcTemplate.update(updateQuery,
+                        genre.getId(),
+                        filmId
+                );
+            }
+        }
+
     }
 
     public void addMPA(Integer mpaId, Long filmId) {
@@ -181,11 +198,9 @@ public class FilmDaoImpl implements FilmDAO {
         String sqlQuery2 = "UPDATE film_genres SET film_id = ?, genre_id = ? " +
                 "WHERE film_id = " + film.getId();
 
-        if (film.getGenres() != null) {
-            this.addGenreToDB(film.getGenres(), film.getId());
-        } else {
-            film.setGenres(new HashSet<>());
-        }
+        this.updateGenreInDB(film.getGenres(), film.getId());
+
+
 
         /*for (Genre genre : film.getGenres()) {
             jdbcTemplate.update(sqlQuery2,
@@ -285,29 +300,48 @@ public class FilmDaoImpl implements FilmDAO {
 
     @Override
     public List<Film> getTopTenMostPopularFilms(Long count) {
-        if (count == null) {
+        if (count == 10L) {
+
             String sqlQuery = "SELECT * " +
                     "          FROM films " +
                     "          WHERE id IN (SELECT film_id " +
-                    "               FROM likes " +
-                    "               GROUP BY film_id " +
-                    "               HAVING COUNT(*) >= 1 " +
-                    "               ORDER BY COUNT(*) DESC " +
-                    "               LIMIT 10)";
+                    "                       FROM likes " +
+                    "                       GROUP BY film_id  " +
+                    "                       HAVING COUNT(*) >= 1 " +
+                    "                       ORDER BY COUNT(*) DESC) " +
+                    "                       LIMIT 10";
 
-            return jdbcTemplate.query(sqlQuery, this::mapRowToFilm);
+           List<Film> mostPopularFilms = jdbcTemplate.query(sqlQuery, this::mapRowToFilm);
+
+           if (mostPopularFilms.isEmpty()) {
+               return this.getAllFilms();
+           } else {
+               return jdbcTemplate.query(sqlQuery, this::mapRowToFilm);
+           }
+
         } else {
             String sqlQuery = "SELECT * " +
                     "          FROM films " +
                     "          WHERE id IN (SELECT film_id " +
                     "               FROM likes " +
                     "               GROUP BY film_id " +
-                    "               HAVING COUNT(*) >= 1 " +
-                    "               ORDER BY COUNT(*) DESC " +
-                    "               LIMIT " + count + ")";
+                    "               HAVING COUNT(user_id) >= 1 " +
+                    "               ORDER BY COUNT(user_id) DESC " +
+                    "               ) LIMIT " + count;
 
+            List<Film> mostPopularFilms = jdbcTemplate.query(sqlQuery, this::mapRowToFilm);
 
-            return jdbcTemplate.query(sqlQuery, this::mapRowToFilm);
+            if (mostPopularFilms.isEmpty()) {
+                if (!this.getAllFilms().isEmpty()) {
+                    return List.of(this.getAllFilms().get(0));
+                } else {
+                    log.info("Film list is empty.");
+                }
+            } else {
+                return jdbcTemplate.query(sqlQuery, this::mapRowToFilm);
+            }
+
+            return mostPopularFilms;
         }
     }
 
