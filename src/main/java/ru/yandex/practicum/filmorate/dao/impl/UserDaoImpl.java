@@ -2,16 +2,19 @@ package ru.yandex.practicum.filmorate.dao.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
+
 import ru.yandex.practicum.filmorate.exceptions.ObjectNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserDAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +23,6 @@ import java.util.Optional;
 public class UserDaoImpl implements UserDAO {
 
     private final Logger log = LoggerFactory.getLogger(UserDaoImpl.class);
-
     private final JdbcTemplate jdbcTemplate;
 
     public UserDaoImpl(JdbcTemplate jdbcTemplate) {
@@ -72,23 +74,7 @@ public class UserDaoImpl implements UserDAO {
         if (user.getId() == null) {
             user.setId(this.getAllUsers().size() + 1L);
         }
-        /*if (user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
-            throw new ValidationException("Login field is rather empty or contains spaces.");
-        }
-        if (user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
-            throw new ValidationException("Email field is rather empty or doesn't contain a '@' symbol.");
-        }
-        if (user.getBirthday().isAfter(LocalDate.now())) {
-            throw new ValidationException("Birthday cannot be past today's date.");
-        }
-        if (user.getFriends() == null) {
-            user.setFriends(new HashSet<>());
-        }
-        if (user.getName() == null) {
-            user.setName(user.getLogin());
-        } else if (user.getName().isEmpty() || user.getName().isBlank()) {
-            user.setName(user.getLogin());
-        }*/
+
         UserValidator.isUserValid(user);
         String sqlQuery = "INSERT INTO users (name, login, email, birthday) VALUES (?, ?, ?, ?)";
 
@@ -107,20 +93,7 @@ public class UserDaoImpl implements UserDAO {
                 throw new ObjectNotFoundException("User doesn't exist.");
             }
         }
-        /*if (user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
-            throw new ValidationException("Email field is rather empty or doesn't contain a '@' symbol.");
-        }
-        if (user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
-            throw new ValidationException("Login field is rather empty or contains spaces.");
-        }
-        if (user.getBirthday().isAfter(LocalDate.now())) {
-            throw new ValidationException("Birthday cannot be past today's date.");
-        }
-        if (user.getName() == null) {
-            user.setName(user.getLogin());
-        } else if (user.getName().isEmpty() || user.getName().isBlank()) {
-            user.setName(user.getLogin());
-        }*/
+
         UserValidator.isUserValid(user);
 
         String sqlQuery = "UPDATE users SET " +
@@ -195,4 +168,5 @@ public class UserDaoImpl implements UserDAO {
     public User addUserWithNoName(User user) {
         return null;
     }
+
 }

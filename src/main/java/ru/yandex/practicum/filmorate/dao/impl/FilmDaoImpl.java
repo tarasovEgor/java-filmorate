@@ -57,9 +57,6 @@ public class FilmDaoImpl implements FilmDAO {
 
     @Override
     public List<Film> getAllFilms() {
-        /*String sqlQuery = "SELECT id, name, description, release_date," +
-                " duration, rating, genre, mpa FROM films";*/
-
         String sqlQuery = "SELECT f.id," +
                 "                 f.name," +
                 "                 f.description," +
@@ -70,7 +67,6 @@ public class FilmDaoImpl implements FilmDAO {
                 "                 f.mpa" +
                 "          FROM films AS f" +
                 "          LEFT OUTER JOIN film_genres AS g ON f.id = g.film_id";
-       // String sqlQuery = "SELECT id, name, description, release_date, duration, rating, genre, mpa FROM films LEFT";
 
         return jdbcTemplate.query(sqlQuery, this::mapRowToFilm);
     }
@@ -152,7 +148,6 @@ public class FilmDaoImpl implements FilmDAO {
 
 
     public void updateGenreInDB(TreeSet<Genre> genres, Long filmId) {
-        String updateQuery = "UPDATE film_genres SET genre_id = ? WHERE film_id = ?";
         String removeQuery = "DELETE FROM film_genres WHERE film_id = ?";
 
         TreeSet<Genre> filmGenres = this.addGenreToFilmObject(filmId);
@@ -168,12 +163,6 @@ public class FilmDaoImpl implements FilmDAO {
             jdbcTemplate.update(removeQuery, filmId);
         } else {
             jdbcTemplate.update(removeQuery, filmId);
-            /*for (Genre genre : genres) {
-                jdbcTemplate.update(updateQuery,
-                        genre.getId(),
-                        filmId
-                );
-            }*/
             this.addGenreToDB(genres, filmId);
         }
     }
@@ -188,8 +177,13 @@ public class FilmDaoImpl implements FilmDAO {
 
     @Override
     public Film updateFilmById(Film film) {
+        List<Long> filmIds = new ArrayList<>();
 
-        if (film.getId() == 9999) {
+        for (Film f : this.getAllFilms()) {
+            filmIds.add(f.getId());
+        }
+
+        if (!filmIds.contains(film.getId())) {
             throw new ObjectNotFoundException("Film is not found.");
         }
 
@@ -360,4 +354,5 @@ public class FilmDaoImpl implements FilmDAO {
     public Film addFilmWithExistingIdOrFilmWithNoId(Film film) {
         return null;
     }
+
 }

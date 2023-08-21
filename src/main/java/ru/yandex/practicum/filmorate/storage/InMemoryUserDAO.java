@@ -7,11 +7,13 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
+
 import java.util.*;
 
 @Component
 @Qualifier("inMemoryUserStorage")
 public class InMemoryUserDAO implements UserDAO {
+
     private final Map<Long, User> users = new HashMap<>();
 
     @Override
@@ -148,4 +150,5 @@ public class InMemoryUserDAO implements UserDAO {
     public List<User> getCommonFriends(Long userId, Long friendId) {
         return null;
     }
+
 }

@@ -8,11 +8,13 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.validation.Valid;
+
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 public class UserController {
+
     private UserService userService;
 
     public UserController(UserService userService) {
@@ -35,16 +37,6 @@ public class UserController {
 
     @PostMapping("/users")
     public User createUser(@Valid @RequestBody User user) {
-//        if (userService.getAllUsers().contains(user)) {
-//            userService.addUserWithExistingId(user);
-//        } else if (user.getId() == null) {
-//            userService.addUserWithNoId(user);
-//        } else if (user.getName() == null) {
-//            userService.addUserWithNoName(user);
-//        } else {
-//            userService.addUser(user);
-//        }
-//        return user;
         return userService.addUser(user);
     }
 
@@ -81,4 +73,5 @@ public class UserController {
     public Long deleteFriend(@PathVariable String id, @PathVariable String friendId) {
         return userService.deleteFriend(Long.valueOf(id), Long.valueOf(friendId));
     }
+
 }

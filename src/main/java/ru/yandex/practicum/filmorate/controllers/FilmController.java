@@ -4,9 +4,11 @@ import org.springframework.web.bind.annotation.*;
 
 import ru.yandex.practicum.filmorate.exceptions.IncorrectPathVariableException;
 import ru.yandex.practicum.filmorate.exceptions.ObjectNotFoundException;
+
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.MPA;
+
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
@@ -16,6 +18,7 @@ import java.util.Optional;
 
 @RestController
 public class FilmController {
+
     private FilmService filmService;
 
     public FilmController(FilmService filmService) {
@@ -38,13 +41,6 @@ public class FilmController {
 
     @PostMapping("/films")
     public Film createFilm(@Valid @RequestBody Film film) {
-//        if (filmService.getAllFilms().contains(film)) {
-//            filmService.addFilmWithExistingIdOrFilmWithNoId(film);
-//        } else if (film.getId() == null) {
-//            filmService.addFilmWithExistingIdOrFilmWithNoId(film);
-//        } else {
-//            filmService.addFilm(film);
-//        }
         return filmService.addFilm(film);
     }
 

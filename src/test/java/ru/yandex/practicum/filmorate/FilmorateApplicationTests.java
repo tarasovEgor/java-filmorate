@@ -17,7 +17,6 @@ import ru.yandex.practicum.filmorate.model.MPA;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
-
 import java.time.LocalDate;
 
 import java.util.List;
@@ -35,7 +34,6 @@ class FilmorateApplicationTests {
 	private final UserDaoImpl userStorage;
 	private final FilmDaoImpl filmStorage;
 
-	//private UserController controller;
 	private UserService userService;
 
 	@BeforeEach
@@ -43,7 +41,6 @@ class FilmorateApplicationTests {
 
 		userService = new UserService(userStorage);
 
-		//controller = new UserController(userService);
 	}
 
 	@Test
@@ -296,7 +293,7 @@ class FilmorateApplicationTests {
 		assertNotEquals(filmStorage.getFilmById(1L), film);
 	}
 
-	/*@Test
+	@Test
 	void shouldDeleteFilm() {
 		Film film = Film.builder()
 				.id(1L)
@@ -316,32 +313,6 @@ class FilmorateApplicationTests {
 
 		assertEquals(filmStorage.getAllFilms().size(), 0);
 		assertEquals(filmStorage.getFilmById(1L), Optional.empty());
-	}*/
-
-	@Test
-	void shouldReturnAFriendList() {
-		User user1 = User.builder()
-				.name("user1")
-				.login("test")
-				.email("test@mail.com")
-				.birthday(LocalDate.of(1988, 5, 12))
-				.build();
-
-		User user2 = User.builder()
-				.name("user2")
-				.login("test")
-				.email("test@mail.com")
-				.birthday(LocalDate.of(1988, 5, 12))
-				.build();
-
-		userStorage.addUser(user1);
-		userStorage.addUser(user2);
-
-		Optional<User> userOptional = userStorage.getUserById(user1.getId());
-
-		System.out.println(userOptional.get().getId());
-
 	}
-
 
 }

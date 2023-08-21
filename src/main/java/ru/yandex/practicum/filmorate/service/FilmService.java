@@ -50,69 +50,14 @@ public class FilmService {
     }
 
     public List<Long> addLikeToAFilm(Long filmId, Long userId) {
-        /*if (filmId == null || userId == null) {
-            throw new ValidationException("One of the arguments is missing.");
-        }
-
-        Optional<Film> film = filmDAO.getFilmById(filmId);
-        Optional<User> user = userDAO.getUserById(userId);
-
-        if (film.isPresent() && user.isPresent()) {
-            if (film.get().getLikes() == null) {
-                film.get().setLikes(new HashSet<>());
-            }
-            if (film.get().getLikes().contains(user.get().getId())) {
-                throw new ValidationException("User has liked the film.");
-            } else {
-                film.get().getLikes().add(user.get().getId());
-            }
-        }
-        return user.get().getId();*/
         return filmDAO.addLikeToAFilm(filmId, userId);
     }
 
     public Long removeLikeFromAFilm(Long filmId, Long userId) {
-        /*if (filmId == null || userId == null) {
-            throw new ValidationException("One of the arguments is missing.");
-        }
-
-        Optional<Film> film = filmDAO.getFilmById(filmId);
-        Optional<User> user = userDAO.getUserById(userId);
-
-        if (film.isPresent() && user.isPresent()) {
-            if (!film.get().getLikes().contains(user.get().getId())) {
-                throw new ValidationException("User hasn't liked the film yet.");
-            } else {
-                film.get().getLikes().remove(user.get().getId());
-            }
-        }
-        return new String("User - " + user.get().getName() + " has unliked " + film.get().getName());*/
-
         return filmDAO.removeLikeFromAFilm(filmId, userId);
     }
 
     public List<Film> getTopTenMostPopularFilms(Long count) {
-//        List<Film> mostPopularFilms = new ArrayList<>(filmDAO.getAllFilms());
-//        return mostPopularFilms.stream()
-//                .sorted((f1, f2) -> {
-//                    if (f1.getLikes() == null && f2.getLikes() == null) {
-//                        f1.setLikes(new HashSet<>());
-//                        f2.setLikes(new HashSet<>());
-//                    }
-//                    if (f1.getLikes() == null) {
-//                        f1.setLikes(new HashSet<>());
-//                    }
-//                    if (f2.getLikes() == null) {
-//                        f2.setLikes(new HashSet<>());
-//                    }
-//                    if (f1.getLikes().size() == f2.getLikes().size())
-//                        return f1.getName().compareTo(f2.getName());
-//                    else if (f1.getLikes().size() > f2.getLikes().size())
-//                        return -1;
-//                    else return 1;
-//                })
-//                .limit(count)
-//                .collect(Collectors.toList());
         return filmDAO.getTopTenMostPopularFilms(count);
     }
 

@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,6 +17,7 @@ import ru.yandex.practicum.filmorate.storage.InMemoryUserDAO;
 import ru.yandex.practicum.filmorate.storage.UserDAO;
 
 import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 
