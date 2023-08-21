@@ -57,9 +57,19 @@ public class FilmDaoImpl implements FilmDAO {
 
     @Override
     public List<Film> getAllFilms() {
-        String sqlQuery = "SELECT id, name, description, release_date," +
-                " duration, rating, genre, mpa FROM films";
+        /*String sqlQuery = "SELECT id, name, description, release_date," +
+                " duration, rating, genre, mpa FROM films";*/
 
+        String sqlQuery = "SELECT f.id," +
+                "                 f.name," +
+                "                 f.description," +
+                "                 f.release_date," +
+                "                 f.duration," +
+                "                 f.rating," +
+                "                 g.genre_id," +
+                "                 f.mpa" +
+                "          FROM films AS f" +
+                "          LEFT OUTER JOIN film_genres AS g ON f.id = g.film_id";
        // String sqlQuery = "SELECT id, name, description, release_date, duration, rating, genre, mpa FROM films LEFT";
 
         return jdbcTemplate.query(sqlQuery, this::mapRowToFilm);
@@ -112,9 +122,9 @@ public class FilmDaoImpl implements FilmDAO {
         );
 
         if (film.getGenres() != null) {
-           this.addGenreToDB(film.getGenres(), film.getId());
+            this.addGenreToDB(film.getGenres(), film.getId());
         } else {
-            film.setGenres(new HashSet<>());
+            film.setGenres(new TreeSet<>());
         }
 
         this.addMPA(film.getMpa().getId(), film.getId());
@@ -122,7 +132,7 @@ public class FilmDaoImpl implements FilmDAO {
         return film;
     }
 
-    public void addGenreToDB(Set<Genre> genres, Long filmId) {
+    public void addGenreToDB(TreeSet<Genre> genres, Long filmId) {
         String sqlQuery = "INSERT INTO film_genres (film_id, genre_id) VALUES (?, ?)";
 
         for (Genre genre : genres) {
@@ -132,30 +142,40 @@ public class FilmDaoImpl implements FilmDAO {
         }
     }
 
-    public Set<Genre> addGenreToFilmObject(Long filmId) {
+    public TreeSet<Genre> addGenreToFilmObject(Long filmId) {
         String sqlQuery = "SELECT * FROM genres WHERE genre_id IN (SELECT genre_id FROM film_genres " +
                 "WHERE film_id = " + filmId + ")";
 
-        Set<Genre> genres = new HashSet<>(jdbcTemplate.query(sqlQuery, this::mapRowToGenre));
+        TreeSet<Genre> genres = new TreeSet<>(jdbcTemplate.query(sqlQuery, this::mapRowToGenre));
         return genres;
     }
 
 
-    public void updateGenreInDB(Set<Genre> genres, Long filmId) {
+    public void updateGenreInDB(TreeSet<Genre> genres, Long filmId) {
         String updateQuery = "UPDATE film_genres SET genre_id = ? WHERE film_id = ?";
         String removeQuery = "DELETE FROM film_genres WHERE film_id = ?";
+
+        TreeSet<Genre> filmGenres = this.addGenreToFilmObject(filmId);
+
+        if (filmGenres.isEmpty()) {
+            if (genres == null || genres.isEmpty()) {
+                return;
+            }
+            this.addGenreToDB(genres, filmId);
+        }
 
         if (genres == null || genres.isEmpty()) {
             jdbcTemplate.update(removeQuery, filmId);
         } else {
-            for (Genre genre : genres) {
+            jdbcTemplate.update(removeQuery, filmId);
+            /*for (Genre genre : genres) {
                 jdbcTemplate.update(updateQuery,
                         genre.getId(),
                         filmId
                 );
-            }
+            }*/
+            this.addGenreToDB(genres, filmId);
         }
-
     }
 
     public void addMPA(Integer mpaId, Long filmId) {
@@ -173,12 +193,6 @@ public class FilmDaoImpl implements FilmDAO {
             throw new ObjectNotFoundException("Film is not found.");
         }
 
-        /*for (Film f : this.getAllFilms()) {
-            if (!f.getId().equals(film.getId())) {
-                throw new ObjectNotFoundException("Film doesn't exist.");
-            }
-        }*/
-
         FilmValidator.isFilmValid(film);
 
         String sqlQuery = "UPDATE films SET" +
@@ -194,19 +208,8 @@ public class FilmDaoImpl implements FilmDAO {
                         film.getMpa().getId(),
                         film.getId());
 
-        //String sqlQuery2 = "INSERT INTO film_genres (film_id, genre_id) VALUES (?, ?)";
-        String sqlQuery2 = "UPDATE film_genres SET film_id = ?, genre_id = ? " +
-                "WHERE film_id = " + film.getId();
-
         this.updateGenreInDB(film.getGenres(), film.getId());
 
-
-
-        /*for (Genre genre : film.getGenres()) {
-            jdbcTemplate.update(sqlQuery2,
-                    film.getId(),
-                    genre.getId());
-        }*/
         return film;
     }
 

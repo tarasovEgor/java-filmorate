@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Data
 @Builder(toBuilder = true)
@@ -22,7 +23,7 @@ public class Film {
     private final LocalDate releaseDate;
     private final int duration;
     private final String rating;
-    private Set<Genre> genres;
+    private TreeSet<Genre> genres;
     private final MPA mpa;
 
 }
