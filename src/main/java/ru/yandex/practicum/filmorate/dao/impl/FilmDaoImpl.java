@@ -38,7 +38,7 @@ public class FilmDaoImpl implements FilmDAO {
                 .releaseDate(resultSet.getDate("release_date").toLocalDate())
                 .duration(resultSet.getInt("duration"))
                 .rating(resultSet.getString("rating"))
-                .genres(this.addGenreToFilmObject(resultSet.getLong("id")))
+                .genres(this.getGenresByFilmId(resultSet.getLong("id")))
                 .mpa(new MPA(resultSet.getInt("mpa"),
                         this.getMPAById(resultSet.getInt("mpa")).get().getName()))
                 .build();
@@ -73,7 +73,18 @@ public class FilmDaoImpl implements FilmDAO {
 
     @Override
     public Optional<Film> getFilmById(Long id) {
-        SqlRowSet filmRow = jdbcTemplate.queryForRowSet("SELECT * FROM films WHERE id = ?", id);
+        SqlRowSet filmRow = jdbcTemplate
+                .queryForRowSet("SELECT f.id," +
+                "                          f.name," +
+                "                          f.description," +
+                "                          f.release_date," +
+                "                          f.duration," +
+                "                          f.rating," +
+                "                          f.mpa," +
+                "                          m.mpa_name " +
+                "                   FROM films AS f " +
+                "                   LEFT OUTER JOIN mpas AS m ON f.mpa = m.mpa_id " +
+                "                   WHERE f.id = " + id);
 
         if (filmRow.next()) {
             Film film = Film.builder()
@@ -83,9 +94,9 @@ public class FilmDaoImpl implements FilmDAO {
                     .releaseDate(filmRow.getDate("release_date").toLocalDate())
                     .duration(filmRow.getInt("duration"))
                     .rating(filmRow.getString("rating"))
-                    .genres(this.addGenreToFilmObject(id))
+                    .genres(this.getGenresByFilmId(id))
                     .mpa(new MPA(filmRow.getInt("mpa"),
-                            this.getMPAById(filmRow.getInt("mpa")).get().getName()))
+                            filmRow.getString("mpa_name")))
                     .build();
 
             log.info("Найден фильм: {} {}", film.getId(), film.getName());
@@ -138,7 +149,7 @@ public class FilmDaoImpl implements FilmDAO {
         }
     }
 
-    public TreeSet<Genre> addGenreToFilmObject(Long filmId) {
+    public TreeSet<Genre> getGenresByFilmId(Long filmId) {
         String sqlQuery = "SELECT * FROM genres WHERE genre_id IN (SELECT genre_id FROM film_genres " +
                 "WHERE film_id = " + filmId + ")";
 
@@ -150,7 +161,7 @@ public class FilmDaoImpl implements FilmDAO {
     public void updateGenreInDB(TreeSet<Genre> genres, Long filmId) {
         String removeQuery = "DELETE FROM film_genres WHERE film_id = ?";
 
-        TreeSet<Genre> filmGenres = this.addGenreToFilmObject(filmId);
+        TreeSet<Genre> filmGenres = this.getGenresByFilmId(filmId);
 
         if (filmGenres.isEmpty()) {
             if (genres == null || genres.isEmpty()) {
@@ -177,30 +188,24 @@ public class FilmDaoImpl implements FilmDAO {
 
     @Override
     public Film updateFilmById(Film film) {
-        List<Long> filmIds = new ArrayList<>();
-
-        for (Film f : this.getAllFilms()) {
-            filmIds.add(f.getId());
-        }
-
-        if (!filmIds.contains(film.getId())) {
-            throw new ObjectNotFoundException("Film is not found.");
-        }
-
         FilmValidator.isFilmValid(film);
 
         String sqlQuery = "UPDATE films SET" +
                         " name = ?, description = ?, release_date = ?, duration = ?," +
                         " rating = ?, mpa = ? WHERE id = ?";
 
-        jdbcTemplate.update(sqlQuery,
-                        film.getName(),
-                        film.getDescription(),
-                        film.getReleaseDate(),
-                        film.getDuration(),
-                        film.getRating(),
-                        film.getMpa().getId(),
-                        film.getId());
+        int count = jdbcTemplate.update(sqlQuery,
+                film.getName(),
+                film.getDescription(),
+                film.getReleaseDate(),
+                film.getDuration(),
+                film.getRating(),
+                film.getMpa().getId(),
+                film.getId());
+
+        if (count == 0) {
+            throw new ObjectNotFoundException("Film is not found.");
+        }
 
         this.updateGenreInDB(film.getGenres(), film.getId());
 

@@ -314,5 +314,4 @@ class FilmorateApplicationTests {
 		assertEquals(filmStorage.getAllFilms().size(), 0);
 		assertEquals(filmStorage.getFilmById(1L), Optional.empty());
 	}
-
 }

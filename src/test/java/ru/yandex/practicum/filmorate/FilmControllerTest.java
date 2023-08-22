@@ -16,6 +16,7 @@ import ru.yandex.practicum.filmorate.storage.InMemoryFilmDAO;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserDAO;
 import ru.yandex.practicum.filmorate.storage.UserDAO;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 import java.util.ArrayList;

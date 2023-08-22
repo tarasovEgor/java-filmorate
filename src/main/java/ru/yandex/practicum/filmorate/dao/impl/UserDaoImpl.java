@@ -88,24 +88,22 @@ public class UserDaoImpl implements UserDAO {
 
     @Override
     public User updateUserById(User user) {
-        for (User usr : this.getAllUsers()) {
-            if (!usr.getId().equals(user.getId())) {
-                throw new ObjectNotFoundException("User doesn't exist.");
-            }
-        }
-
         UserValidator.isUserValid(user);
 
         String sqlQuery = "UPDATE users SET " +
                 "name = ?, login = ?, email = ?, birthday = ? " +
                 "WHERE id = ?";
 
-        jdbcTemplate.update(sqlQuery,
+        int count = jdbcTemplate.update(sqlQuery,
                 user.getName(),
                 user.getLogin(),
                 user.getEmail(),
                 user.getBirthday(),
                 user.getId());
+
+        if (count == 0) {
+            throw new ObjectNotFoundException("User doesn't exist.");
+        }
 
         return user;
     }
