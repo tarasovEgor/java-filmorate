@@ -4,15 +4,21 @@ import org.springframework.web.bind.annotation.*;
 
 import ru.yandex.practicum.filmorate.exceptions.IncorrectPathVariableException;
 import ru.yandex.practicum.filmorate.exceptions.ObjectNotFoundException;
+
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.model.MPA;
+
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
+
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 public class FilmController {
+
     private FilmService filmService;
 
     public FilmController(FilmService filmService) {
@@ -35,14 +41,7 @@ public class FilmController {
 
     @PostMapping("/films")
     public Film createFilm(@Valid @RequestBody Film film) {
-        if (filmService.getAllFilms().contains(film)) {
-            filmService.addFilmWithExistingIdOrFilmWithNoId(film);
-        } else if (film.getId() == null) {
-            filmService.addFilmWithExistingIdOrFilmWithNoId(film);
-        } else {
-            filmService.addFilm(film);
-        }
-        return film;
+        return filmService.addFilm(film);
     }
 
     @PutMapping("/films")
@@ -66,15 +65,36 @@ public class FilmController {
     }
 
     @PutMapping("/films/{id}/like/{userId}")
-    public Long addLikeToAFilm(@PathVariable String id, @PathVariable String userId) {
+    public List<Long> addLikeToAFilm(@PathVariable String id, @PathVariable String userId) {
         return filmService.addLikeToAFilm(Long.valueOf(id), Long.valueOf(userId));
     }
 
     @DeleteMapping("/films/{id}/like/{userId}")
-    public String removeLikeFromAFilm(@PathVariable String id, @PathVariable String userId) {
+    public Long removeLikeFromAFilm(@PathVariable String id, @PathVariable String userId) {
         if (Integer.parseInt(id) < 0 || Integer.parseInt(userId) < 0) {
             throw new IncorrectPathVariableException("User's or friend's ID is negative.");
         }
         return filmService.removeLikeFromAFilm(Long.valueOf(id), Long.valueOf(userId));
     }
+
+    @GetMapping("/genres")
+    public List<Genre> getAllGenres() {
+        return filmService.getAllGenres();
+    }
+
+    @GetMapping("/genres/{id}")
+    public Optional<Genre> getGenreById(@PathVariable Integer id) {
+        return filmService.getGenreById(id);
+    }
+
+    @GetMapping("/mpa")
+    public List<MPA> getAllMPAs() {
+        return filmService.getAllMPAs();
+    }
+
+    @GetMapping("/mpa/{id}")
+    public Optional<MPA> getMPAById(@PathVariable Integer id) {
+        return filmService.getMPAById(id);
+    }
+
 }

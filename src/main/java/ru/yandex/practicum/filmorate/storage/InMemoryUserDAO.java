@@ -1,15 +1,19 @@
 package ru.yandex.practicum.filmorate.storage;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
+
 import java.util.*;
 
 @Component
-public class InMemoryUserStorage implements UserStorage {
+@Qualifier("inMemoryUserStorage")
+public class InMemoryUserDAO implements UserDAO {
+
     private final Map<Long, User> users = new HashMap<>();
 
     @Override
@@ -126,4 +130,25 @@ public class InMemoryUserStorage implements UserStorage {
         users.values().removeIf(x -> users.containsKey(id));
         return id;
     }
+
+    @Override
+    public List<Long> addFriends(Long id, Long friendId) {
+        return null;
+    }
+
+    @Override
+    public Long deleteFriend(Long userId, Long friendId) {
+        return null;
+    }
+
+    @Override
+    public List<User> getUsersFriends(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<User> getCommonFriends(Long userId, Long friendId) {
+        return null;
+    }
+
 }
